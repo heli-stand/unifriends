@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "373316190725",
-    "firebase_url": "https://uni-friends-82efc.firebaseio.com",
-    "project_id": "uni-friends-82efc",
-    "storage_bucket": "uni-friends-82efc.appspot.com"
+    "project_number": "581247798838",
+    "firebase_url": "https://unifriends-d63b5.firebaseio.com",
+    "project_id": "unifriends-d63b5",
+    "storage_bucket": "unifriends-d63b5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:373316190725:android:4b48560e02e239acfbd26c",
+        "mobilesdk_app_id": "1:581247798838:android:a56848bf43f7d744aa9297",
         "android_client_info": {
           "package_name": "com.example.unifriends"
         }
       },
       "oauth_client": [
         {
-          "client_id": "373316190725-oaom7g24jond76rmki4nda2c1t6ub3ql.apps.googleusercontent.com",
+          "client_id": "581247798838-3r1guj17qva15tmcn6dvfalohp4v09vm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.unifriends",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "373316190725-mapp36v161g3jgulh0pa325rjgvleldu.apps.googleusercontent.com",
+          "client_id": "581247798838-qa1ilfm7srd8sfbvl9uo0056qephltit.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAbeyzGFPCOWcH_HKbVaG8jKwKz5QtT07g"
+          "current_key": "AIzaSyCj-bRZkSXRLpV_YjaZAhgeMRpg--eOddE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "373316190725-mapp36v161g3jgulh0pa325rjgvleldu.apps.googleusercontent.com",
+              "client_id": "581247798838-qa1ilfm7srd8sfbvl9uo0056qephltit.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
