@@ -18,6 +18,13 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+        <Button
+            android:id="@+id/goDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="goToDashBoard"
+            android:text="Dashboard" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
@@ -35,12 +42,5 @@
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="start|center"
         app:srcCompat="@android:drawable/ic_dialog_email" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="sendMessage"
-        android:text="Button" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
