@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.unifriends.R;
-import com.example.unifriends.friendFinder.findFriends;
+import com.example.unifriends.friendFinder.FindFriends;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -18,7 +18,7 @@ public class Dashboard extends AppCompatActivity {
     }
 
     public void findFriendsClick(View view) {
-        Intent intent = new Intent(this, findFriends.class);
+        Intent intent = new Intent(this, FindFriends.class);
         startActivity(intent);
         finish();
     }
