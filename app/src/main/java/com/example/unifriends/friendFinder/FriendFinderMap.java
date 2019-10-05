@@ -7,12 +7,15 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.unifriends.R;
@@ -29,6 +32,17 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
 
     LocationManager locationManager;
     LocationListener locationListener;
+
+    //redirect to verification step
+
+    public void redirectToVerification(View view) {
+
+
+        Intent intent = new Intent(this, Verification.class);
+        startActivity(intent);
+        finish();
+
+    }
 
 
     @Override
@@ -60,7 +74,7 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onLocationChanged(Location location) {
                 Log.i("Location", location.toString());
-                Toast.makeText(FriendFinderMap.this, location.toString(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(FriendFinderMap.this, location.toString(), Toast.LENGTH_SHORT).show();
                 LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(current).title("You are here"));
@@ -96,16 +110,18 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-            /* LAST KNOWN LOCATION CODE
-
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            LatLng current = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-            Log.i("last known location", current.toString());   //gets last known location successfully
-            mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(current).title("You are here"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
-
-             */
+            //LAST KNOWN LOCATION CODE
+//
+//            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//
+//
+//            if(lastKnownLocation != null) {
+//                LatLng current = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+//                Log.i("last known location", current.toString());   //gets last known location successfully
+//                mMap.clear();
+//                mMap.addMarker(new MarkerOptions().position(current).title("You are here"));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+//            }
         }
 
 
