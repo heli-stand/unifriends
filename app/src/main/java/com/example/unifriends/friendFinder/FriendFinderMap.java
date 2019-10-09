@@ -33,6 +33,9 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
     LocationManager locationManager;
     LocationListener locationListener;
 
+    double[] selectedUserLocation;
+    String selectedUserName;
+
     //redirect to verification step
 
     public void redirectToVerification(View view) {
@@ -63,6 +66,14 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_finder_map);
+
+        //get values passed down of selected user from results
+
+        Intent intent = getIntent();
+        selectedUserLocation = intent.getDoubleArrayExtra("selectedUserLocation");
+        selectedUserName = intent.getStringExtra("selectedUserName");
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -73,12 +84,15 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                // Add a marker for selected user and move the camera
+
                 Log.i("Location", location.toString());
                // Toast.makeText(FriendFinderMap.this, location.toString(), Toast.LENGTH_SHORT).show();
                 LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(current).title("You are here"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+
             }
 
             @Override
@@ -140,8 +154,8 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
+                 LatLng selectedUser = new LatLng(selectedUserLocation[0], selectedUserLocation[2]);
+                mMap.addMarker(new MarkerOptions().position(selectedUser).title(selectedUserName+ " is here"));
 
     }
 }
