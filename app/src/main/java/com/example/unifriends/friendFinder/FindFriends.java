@@ -35,16 +35,16 @@ public class FindFriends extends AppCompatActivity {
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //position tells you which item was clicked
-                Log.i("Person Tapped", NAMES[position]);
-                double[] selectedUserLocation = longLatSplitter(LOCATIONS[position]);
-                String selectedUserName = NAMES[position];
-                viewMap(selectedUserLocation, selectedUserName);
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                //position tells you which item was clicked
+                                                Log.i("Person Tapped", NAMES[position]);
+                                                double[] selectedUserLocation = longLatSplitter(LOCATIONS[position]);
+                                                String selectedUserName = NAMES[position];
+                                                viewMap(selectedUserLocation, selectedUserName);
 
-            }
-        }
+                                            }
+                                        }
         );
 
     }

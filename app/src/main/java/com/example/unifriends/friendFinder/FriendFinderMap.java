@@ -154,8 +154,8 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-                 LatLng selectedUser = new LatLng(selectedUserLocation[0], selectedUserLocation[2]);
-                mMap.addMarker(new MarkerOptions().position(selectedUser).title(selectedUserName+ " is here"));
+//                 LatLng selectedUser = new LatLng(selectedUserLocation[0], selectedUserLocation[2]);
+//                mMap.addMarker(new MarkerOptions().position(selectedUser).title(selectedUserName+ " is here"));
 
     }
 }
