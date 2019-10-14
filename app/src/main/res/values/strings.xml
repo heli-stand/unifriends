@@ -106,4 +106,6 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_friend_finder_map">Map</string>
     <string name="title_activity_verification">Verification</string>
+    <string name="sim_subjects">Similar Subjects</string>
+    <string name="sim_interests">SImilar Interests</string>
 </resources>
