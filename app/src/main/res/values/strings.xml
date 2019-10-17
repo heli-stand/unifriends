@@ -106,4 +106,8 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_friend_finder_map">Map</string>
     <string name="title_activity_verification">Verification</string>
+    <string name="chatbuttontext">Chat</string>
+    <string name="addbuttontext">Add</string>
+    <string name="meetbuttontext">Meet</string>
+    <string name="intereststxt">Interests</string>
 </resources>

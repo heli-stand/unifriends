@@ -2,6 +2,7 @@ package com.example.unifriends.friendFinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.unifriends.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class FindFriends extends AppCompatActivity {
 
@@ -29,20 +34,31 @@ public class FindFriends extends AppCompatActivity {
 
         ListView listView = (ListView)findViewById(R.id.listView);
 
-        CustomAdapter customAdapter = new CustomAdapter();
+        // Build list of friends with mock data
+        ArrayList<Friend> friends = new ArrayList<>();
+
+        for (int i = 0; i < NAMES.length; i++) {
+            friends.add(new Friend(NAMES[i], LOCATIONS[i], IMAGES[i],
+                    new ArrayList<String>(Arrays.asList("Dota 2", "Golf", "Cars", "Skydiving", "Sleeping"))));
+        }
+
+
+        CustomAdapter customAdapter = new CustomAdapter(this, friends);
 
         listView.setAdapter(customAdapter);
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                 //position tells you which item was clicked
+                                                /*
                                                 Log.i("Person Tapped", NAMES[position]);
                                                 double[] selectedUserLocation = longLatSplitter(LOCATIONS[position]);
                                                 String selectedUserName = NAMES[position];
                                                 viewMap(selectedUserLocation, selectedUserName);
+                                                */
 
+                                                gotoProfile( ((Friend) parent.getItemAtPosition(position)) );
                                             }
                                         }
         );
@@ -60,44 +76,97 @@ public class FindFriends extends AppCompatActivity {
 
     }
 
+    public void gotoProfile(Friend f) {
+        Log.i("User selected: ", f.toString());
+        Intent intent = new Intent(this, FriendProfile.class);
+        intent.putExtra("name", f.getName());
+        intent.putExtra("img", f.getImg());
+        intent.putExtra("interests", (ArrayList<String>) f.getInterests());
+        startActivity(intent);
+    }
+
     public void viewMap(double[] selectedUserLocation, String selectedUserName){
         Intent intent = new Intent(this, FriendFinderMap.class);
         intent.putExtra("selectedUserLocation", selectedUserLocation);
         intent.putExtra("selectedUserName", selectedUserName);
         startActivity(intent);
-        finish();
     }
 
     class CustomAdapter extends BaseAdapter{
+        private Context context;
+        private List<Friend> list;
+
+        public CustomAdapter(Context context, List<Friend> list) {
+            this.context = context;
+            this.list = list;
+        }
 
         @Override
         public int getCount() {
-            return IMAGES.length;
+            return list.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return list.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Friend current = (Friend) getItem(position);
+
             convertView = getLayoutInflater().inflate(R.layout.customlayout,null);
 
             ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
             TextView textView_name = (TextView)convertView.findViewById(R.id.textView_name);
 
-            imageView.setImageResource(IMAGES[position]);
-            textView_name.setText(NAMES[position]);
+            imageView.setImageResource(current.getImg());
+            textView_name.setText(current.getName());
 
             return convertView;
         }
     }
 
+    class Friend {
+        private String id;
+        private String name;
+        private String location;
+        // TODO: Implement uploading and storing of images on Firebase first for something more sensible
+        private int img;
+
+        private List<String> interests;
+
+        public Friend(String name, String loc, int img, List<String> interests) {
+            this.name = name;
+            this.location = loc;
+            this.img = img;
+            this.interests = interests;
+        }
+
+        public String getId(){
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public int getImg() {
+            return img;
+        }
+
+        public List<String> getInterests() {
+            return interests;
+        }
+    }
 
 }
