@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -214,14 +215,8 @@ public class facialLogin extends AppCompatActivity {
                     Log.d(LOG_TAG, verificationResult);
 
                     if (result.isIdentical){
-                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                        mAuth.signInWithEmailAndPassword(email, password);
-                        if (mAuth.getUid() != null){
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            Log.d(TAG, "Log In Successful");
-                        }
+                        Log.d(TAG, "Identical Person");
+                        signin(email, password);
                     }else{
                         Log.d(TAG, "Log In Failed.Different Person");
                     }
@@ -237,4 +232,30 @@ public class facialLogin extends AppCompatActivity {
         });
         thread.start();
     }
+
+    private void signin(String email, String password){
+        final FirebaseAuth mAuth =  FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "Sign in:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "Sign in:failure", task.getException());
+//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                });
+    }
+
 }
