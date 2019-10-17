@@ -1,4 +1,14 @@
 <resources>
-    <string name="app_name">uniFriends</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Uni Friends</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_text">Login</string>
+    <string name="register_text">Register</string>
+
+    <!--for facebook login-->
+
+    <!--facebook login ends-->
+
+    <!--error messages-->
+
 </resources>

@@ -1,4 +1,4 @@
-package com.example.unifriends;
+package com.team21.unifriends;
 
 import org.junit.Test;
 
