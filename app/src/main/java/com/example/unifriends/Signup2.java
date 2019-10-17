@@ -4,143 +4,225 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
+
+import com.microsoft.projectoxford.face.*;
+import com.microsoft.projectoxford.face.contract.*;
 
 public class Signup2 extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-
-    private static final String TAG = "Signup";
-
-    private Spinner degreeSpinner;
-    private Spinner majorSpinner;
-
-    private EditText nameEditText;
-    private EditText uniEditText;
+    private static final String TAG = "Signup2";
+    private UUID facialID;
+    private final int PICK_IMAGE = 1;
+    private Bitmap bitmap;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup2);
-
-        mAuth = FirebaseAuth.getInstance();
-
-
-        nameEditText = findViewById(R.id.editText3);
-        uniEditText = findViewById(R.id.editText4);
-
-        degreeSpinner = findViewById(R.id.degree_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> degreeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.degree_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        degreeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        degreeSpinner.setAdapter(degreeAdapter);
-
-        majorSpinner = findViewById(R.id.major_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> majorAdapter = ArrayAdapter.createFromResource(this,
-                R.array.major_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        majorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        majorSpinner.setAdapter(majorAdapter);
-
     }
 
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        // On selecting a spinner item
-//        String item = parent.getItemAtPosition(position).toString();
-//
-//        // Showing selected spinner item
-//        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-//    }
+    public void chooseImage(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(
+                intent, "Select Picture"), PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK &&
+                data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                        getContentResolver(), uri);
+
+                ImageView imageView = findViewById(R.id.imageView1);
+                imageView.setImageBitmap(bitmap);
+
+//                // Comment out for tutorial
+                facialID = detectAndFrame(bitmap);
+//                UUID Id1 = detect(bitmap2);
+//                verify(Id0,Id1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
+    private UUID detectAndFrame(final Bitmap imageBitmap) {
 
+        String apiEndpoint = "https://tryface.cognitiveservices.azure.com/face/v1.0";
+        String subscriptionKey = "40fef214516e4321bff17da500858306";
+        final FaceServiceClient faceServiceClient =
+                new FaceServiceRestClient(apiEndpoint, subscriptionKey);
 
-    public void submit(View view){
-//        String email = emailEditText.getText().toString();
-//        String password = passwordEditText.getText().toString();
-//
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        final UUID[] mFaceId0 = new UUID[1];
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        ByteArrayInputStream inputStream =
+                new ByteArrayInputStream(outputStream.toByteArray());
+
+        AsyncTask<InputStream, String, Face[]> detectTask =
+                new AsyncTask<InputStream, String, Face[]>() {
+                    String exceptionMessage = "";
+
+                    @Override
+                    protected Face[] doInBackground(InputStream... params) {
+                        try {
+                            publishProgress("Detecting...");
+                            Face[] result = faceServiceClient.detect(
+                                    params[0],
+                                    true,         // returnFaceId
+                                    false,        // returnFaceLandmarks
+                                    null          // returnFaceAttributes:
+                                    /* new FaceServiceClient.FaceAttributeType[] {
+                                        FaceServiceClient.FaceAttributeType.Age,
+                                        FaceServiceClient.FaceAttributeType.Gender }
+                                    */
+                            );
+                            if (result == null){
+                                publishProgress(
+                                        "Detection Finished. Nothing detected");
+                                return null;
+                            }
+                            publishProgress(String.format(
+                                    "Detection Finished. %d face(s) detected",
+                                    result.length));
+                            return result;
+                        } catch (Exception e) {
+                            exceptionMessage = String.format(
+                                    "Detection failed: %s", e.getMessage());
+                            return null;
+                        }
+                    }
+
 //                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "createUserWithEmail:success");
-//
-//                            updateUserInfo();
-////                            FirebaseUser user = mAuth.getCurrentUser();
-////                            updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(Signup.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-////                            updateUI(null);
-//                        }
+//                    protected void onPreExecute() {
+//                        //TODO: show progress dialog
+//                        detectionProgressDialog.show();
 //                    }
-//                });
+//                    @Override
+//                    protected void onProgressUpdate(String... progress) {
+//                        //TODO: update progress
+//                        detectionProgressDialog.setMessage(progress[0]);
+//                    }
 
+                    private static final String LOG_TAG = "LogActivity";
+
+                    @Override
+                    protected void onPostExecute(Face[] result) {
+                        //TODO: update face frames
+//                        detectionProgressDialog.dismiss();
+
+//                        if(!exceptionMessage.equals("")){
+//                            showError(exceptionMessage);
+//                        }
+                        if (result == null) return;
+
+                        ImageView imageView = findViewById(R.id.imageView1);
+                        imageView.setImageBitmap(
+                                drawFaceRectanglesOnBitmap(imageBitmap, result));
+
+
+                        for (Face face : result) {
+                            UUID mFaceId = face.faceId;
+                            mFaceId0[0] = mFaceId;
+                            Log.d(LOG_TAG, mFaceId.toString());
+                        }
+
+                        //TextView textView = findViewById(R.id.verifyText);
+                        //textView.setText(result[1].toString());
+                    }
+                };
+
+        try{
+            return detectTask.execute(inputStream).get()[0].faceId;
+        }catch (Exception e){
+            return null;
+        }
     }
+
+    private static Bitmap drawFaceRectanglesOnBitmap(
+            Bitmap originalBitmap, Face[] faces) {
+        Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.RED);
+        paint.setStrokeWidth(10);
+        if (faces != null) {
+            for (Face face : faces) {
+                FaceRectangle faceRectangle = face.faceRectangle;
+                canvas.drawRect(
+                        faceRectangle.left,
+                        faceRectangle.top,
+                        faceRectangle.left + faceRectangle.width,
+                        faceRectangle.top + faceRectangle.height,
+                        paint);
+            }
+        }
+        return bitmap;
+    }
+
 
     public void updateUserInfo(View view){
-        String degree = degreeSpinner.getSelectedItem().toString();
-        String major = majorSpinner.getSelectedItem().toString();
-        String name = nameEditText.getText().toString();
-        String uni = uniEditText.getText().toString();
 
-        String id = mAuth.getUid();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://unifriends-d63b5.appspot.com/>");
+        // Create a reference to "mountains.jpg"
 
-        Log.d(TAG, id);
+        StorageReference mountainsRef = storageRef.child("usersImage/" + FirebaseAuth.getInstance().getUid() + ".jpg");
 
-        Map<String, Object> update = new HashMap<>();
-        update.put("degree", degree);
-        update.put("major", major);
-        update.put("name", name);
-        update.put("uni", uni);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("users").document(id)
-                .update(update)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                Log.d(TAG, "Image upload done");
+                Intent intent = new Intent(Signup2.this, Signup3.class);
+                intent.putExtra("facialID", facialID.toString());
+                startActivity(intent);
+            }
+        });
     }
 }

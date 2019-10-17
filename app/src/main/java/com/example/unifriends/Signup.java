@@ -79,8 +79,6 @@ public class Signup extends AppCompatActivity{
 
                             uploadUserInfo(user.getUid(), email, password);
 
-
-
 //                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

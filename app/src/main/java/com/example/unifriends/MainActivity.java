@@ -2,12 +2,8 @@ package com.example.unifriends;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-//import com.example.unifriends.ui.login.LoginActivity;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,13 +19,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseAuth.getInstance().signOut();
+        setContentView(R.layout.activity_main);
+
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null){
+            startActivity(new Intent(MainActivity.this, Login.class));
+        }
+
+
 //        Log.println(Log.ASSERT, "a","helloworld");
 //        if (user == null){
 //            startActivity(new Intent(MainActivity.this, Login.class));
 //        }
-        startActivity(new Intent(MainActivity.this, Login.class));
+
 //        Log.println(Log.ASSERT, "a","helloworld");
 
 //        setContentView(R.layout.activity_main);
@@ -57,33 +60,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public void sendMessage(View view) {
-        // Do something in response to button click
-
-//        startActivity(new Intent(MainActivity.this, MobileAuth.class));
-//        Log.println(Log.ASSERT, "a","helloworld");
-//
-//        // Create a new user with a first, middle, and last name
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("middle", "Mathison");
-//        user.put("last", "Turing");
-//        user.put("born", 1912);
-//
-//        // Add a new document with a generated ID
-//        db.collection("users")
-//                .add(user)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w(TAG, "Error adding document", e);
-//                    }
-//                });
+    public void signout(View view){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(MainActivity.this, Login.class));
     }
 }
