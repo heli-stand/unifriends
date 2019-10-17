@@ -1,4 +1,4 @@
-package com.team21.unifriends;
+package com.example.unifriends;
 
 import android.content.Intent;
 import android.os.Build;
@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginClick(View View){
         startActivity(new Intent(this,RegisterActivity.class));
-        overridePendingTransition(R.anim.slide_in_right,R.anim.stay);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
 
     }
 }

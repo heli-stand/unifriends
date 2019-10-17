@@ -1,4 +1,4 @@
-package com.team21.unifriends;
+package com.example.unifriends;
 
 import android.content.Intent;
 import android.os.Build;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.team21.unifriends.RegisterActivity"
+    tools:context=".RegisterActivity"
     android:background="@color/register_bk_color"
     android:focusableInTouchMode="true"
     android:gravity="center"
