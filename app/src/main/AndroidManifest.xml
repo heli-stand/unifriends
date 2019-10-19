@@ -39,7 +39,7 @@
             android:label="@string/title_activity_friend_finder_map" />
         <activity android:name=".dashboard.Dashboard" />
         <activity
-            android:name="com.example.unifriends.MainActivity"
+            android:name="com.example.unifriends.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -51,6 +51,10 @@
 
         <activity
             android:name="com.example.unifriends.RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.example.unifriends.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

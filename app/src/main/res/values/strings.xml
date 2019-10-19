@@ -91,6 +91,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -115,4 +116,19 @@
     <string name="login_password_hint">Password</string>
     <string name="login_text">Login</string>
     <string name="register_text">Register</string>
+
+
+    <string-array name="degree_array">
+        <item>Master</item>
+        <item>Bachelor</item>
+        <item>Doctor</item>
+    </string-array>
+
+    <string-array name="major_array">
+        <item>Software Engineering</item>
+        <item>Data Science</item>
+        <item>Computer Science</item>
+        <item>Information Technology</item>
+        <item>Information System</item>
+    </string-array>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.unifriends;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,7 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -32,9 +39,12 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private TextInputEditText emailTV, passwordTV, nameTV, uniTV;
+    private Spinner degreeSpinner, majorSpinner;
     private Button regBtn;
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
+    SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         changeStatusBarColor();
 
         mAuth = FirebaseAuth.getInstance();
-
+        sp = getSharedPreferences("login", MODE_PRIVATE);
         initializeUI();
 
         regBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +61,10 @@ public class RegisterActivity extends AppCompatActivity {
                 registerNewUser();
             }
         });
+
+
     }
+
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -61,14 +74,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public void onLoginClick(View view){
-        startActivity(new Intent(this,LoginActivity.class));
-        overridePendingTransition(R.anim.slide_in_left,android.R.anim.slide_out_right);
+    public void onLoginClick(View view) {
+        startActivity(new Intent(this, LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
 
     }
 
     private void registerNewUser() {
-       // progressBar.setVisibility(View.VISIBLE);
+        // progressBar.setVisibility(View.VISIBLE);
 
         String email, password;
         email = emailTV.getText().toString();
@@ -91,38 +104,83 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
                             //progressBar.setVisibility(View.GONE);
 
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                        else {
+                            //Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            //startActivity(intent);
+                        } else {
                             Toast.makeText(getApplicationContext(), String.format("Registration failed because %s",
                                     Objects.requireNonNull(task.getException()).getMessage()), Toast.LENGTH_LONG).show();
                             //progressBar.setVisibility(View.GONE);
                         }
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+
+                        uploadUserInfo(mAuth.getCurrentUser().getUid());
+
                     }
                 });
     }
 
 
     private void initializeUI() {
-        emailTV = findViewById(R.id.editTextEmail);
-        passwordTV = findViewById(R.id.editTextPassword);
+        emailTV = findViewById(R.id.editTextEmailReg);
+        passwordTV = findViewById(R.id.editTextPasswordReg);
         uniTV = findViewById(R.id.editTextUniName);
-        nameTV = findViewById(R.id.editTextUniName);
-
+        nameTV = findViewById(R.id.editTextName);
         regBtn = findViewById(R.id.btnRegister);
+
+        initializeDegree();
+        initializeMajor();
     }
 
-    private void uploadUserInfo(String id, String email, String password) {
+
+    private void initializeDegree() {
+        degreeSpinner = findViewById(R.id.degreeSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.degree_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        degreeSpinner.setAdapter(adapter);
+    }
+
+    private void initializeMajor() {
+        majorSpinner = findViewById(R.id.majorSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.major_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        majorSpinner.setAdapter(adapter);
+    }
+
+    private void uploadUserInfo(String id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> user = new HashMap<>();
-        user.put("email", email);
-//        user.put("degree", degree);
-//        user.put("major", major);
-        user.put("name", nameTV);
-        user.put("uni", uniTV);
-        //user.put("password", password);
+        user.put("email", emailTV.getText().toString().toLowerCase());
+        user.put("degree", degreeSpinner.getSelectedItem().toString());
+        user.put("major", majorSpinner.getSelectedItem().toString());
+        user.put("name", nameTV.getText().toString());
+        user.put("uni", uniTV.getText().toString().toUpperCase());
+
+        // storing passwords is not a best practice
+        // however, because this is only a prototype, we store it to make an easier development
+        user.put("password", passwordTV.getText().toString());
+
+
+       /* FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(nameTV.getText().toString()).build();
+
+        fUser.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated.");
+                        }
+                    }
+                });*/
 
         db.collection("users").document(id)
                 .set(user)
@@ -130,7 +188,9 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        sp.edit().putBoolean("logged",true).apply();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

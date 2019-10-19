@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--created based on https://appsnipp.com/free-android-clean-ui-login-registration-design-with-source-code/-->
+<!--We modified the template so it complies Material Design standard-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -65,9 +67,9 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputEmail"
                         style="@style/parent"
-                        android:layout_marginTop="@dimen/loginViewsMargin">
+                        android:layout_marginTop="@dimen/registerViewsMargin">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextEmail"
+                            android:id="@+id/editTextEmailReg"
                             style="@style/modifiedEditText"
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
@@ -78,18 +80,19 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputPassword"
                         style="@style/parent"
-                        android:layout_marginTop="@dimen/loginViewsMargin">
+                        android:layout_marginTop="@dimen/registerViewsMargin">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextPassword"
+                            android:id="@+id/editTextPasswordReg"
                             style="@style/modifiedEditText"
                             android:hint="@string/login_password_hint"
                             android:maxLines="1"
                             android:inputType="textPassword"/>
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputUniName"
                         style="@style/parent"
-                        android:layout_marginTop="@dimen/loginViewsMargin">
+                        android:layout_marginTop="@dimen/registerViewsMargin">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextUniName"
                             style="@style/modifiedEditText"
@@ -99,25 +102,55 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Degree"
+                        style="@style/TextView.InputLabel"
+                        android:layout_marginTop="@dimen/registerViewsMargin"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/degreeSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        />
+
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Major"
+                        style="@style/TextView.InputLabel"
+                        android:layout_marginTop="@dimen/registerViewsMargin"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/majorSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        />
+                    <!--<Spinner-->
+                        <!--style="@style/parent"-->
+                        <!--android:id="@+id/planets_spinner"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:autofillHints="Select Degree"/>-->
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRegister"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/register_text"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/loginViewsMargin"/>
+                        android:layout_marginTop="@dimen/registerViewsMargin"
+                       />
 
-
-                <!--    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-                        android:id="@+id/cirRegisterButton"
-                        style="@style/loginButton"
-                        app:spinning_bar_width="4dp"
-                        app:spinning_bar_color="#FFF"
-                        android:text="Register"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/loginViewsMargin"
-                        app:initialCornerAngle="27dp"
-                        app:spinning_bar_padding="6dp"/>-->
 
                     <TextView
                         style="@style/parent"
@@ -126,7 +159,7 @@
                         android:textColor="@color/themeColor"
                         android:textSize="17sp"
                         android:text="Already have an account?"
-                        android:layout_marginTop="@dimen/loginViewsMargin"
+                        android:layout_marginTop="@dimen/registerViewsMargin"
                         android:onClick="onLoginClick"/>
 
                 </LinearLayout>
