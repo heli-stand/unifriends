@@ -30,34 +30,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<View-->
-                <!--android:id="@+id/profile_pic_back"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="150dp"-->
-                <!--android:background="@drawable/dashboard_profile_back" />-->
-
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="3dp"-->
-                <!--android:background="#f4efef"-->
-                <!--android:layout_below="@+id/profile_pic_back"/>-->
-
-                <!--<ImageView-->
-                <!--android:id="@+id/profile_pic"-->
-                <!--android:layout_width="130dp"-->
-                <!--android:layout_height="130dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="85dp"-->
-                <!--android:elevation="5.5dp"-->
-                <!--android:scaleType="centerCrop"-->
-                <!--android:src="@drawable/user"-->
-                <!--android:transitionName="user_profile_pic"-->
-                <!--/>-->
-
                 <!--</RelativeLayout>-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="100dp"
@@ -88,7 +60,7 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingStart="16dp"
-                    android:text="Welcome, Mate!"
+                    android:text="Welcome!"
                     android:textColor="#27384c"
                     android:textSize="18.5sp"/>
 
@@ -138,12 +110,12 @@
                                 android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
                                 android:drawablePadding="10dp"
-                                android:drawableTop="@drawable/group1057"
+                                android:drawableTop="@drawable/ic_person_add"
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:text="Play History"
-                                android:textColor="#27384c"
+                                android:text="Find Friends"
+                                android:textColor="@android:color/black"
                                 android:textSize="13.5sp" />
 
                         </FrameLayout>
@@ -176,11 +148,11 @@
                                 android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
                                 android:drawablePadding="10dp"
-                                android:drawableTop="@drawable/group1059"
+                                android:drawableTop="@drawable/ic_event_available"
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:text="Pay History"
+                                android:text="Event"
                                 android:textColor="#27384c"
                                 android:textSize="13.5sp" />
 
@@ -222,11 +194,11 @@
                                 android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
                                 android:drawablePadding="10dp"
-                                android:drawableTop="@drawable/group1060"
+                                android:drawableTop="@drawable/ic_chat_bubble_outline"
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:text="My Profile"
+                                android:text="Group Chat"
                                 android:textColor="#27384c"
                                 android:textSize="13.5sp" />
 
@@ -260,11 +232,11 @@
                                 android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
                                 android:drawablePadding="10dp"
-                                android:drawableTop="@drawable/group1060"
+                                android:drawableTop="@drawable/ic_verified_user"
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:text="Share"
+                                android:text="Verify Friend"
                                 android:textColor="#27384c"
                                 android:textSize="13.5sp" />
 
@@ -276,68 +248,68 @@
 
             </LinearLayout>
 
-          <!--  <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="12.5dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="0dp"
-                app:cardElevation="0.65dp">
+              <com.google.android.material.card.MaterialCardView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="15dp"
+                  android:layout_marginTop="12.5dp"
+                  app:cardBackgroundColor="@android:color/holo_red_dark"
+                  app:cardCornerRadius="0dp"
+                  app:cardElevation="0.65dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/slot_item_background"
-                        android:clickable="true"
-                        android:drawableLeft="@drawable/tnc"
-                        android:drawablePadding="15dp"
-                        android:drawableStart="@drawable/tnc"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="15dp"
-                        android:paddingEnd="15dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingStart="15dp"
-                        android:paddingTop="15dp"
-                        android:text="Terms and Conditions"
-                        android:textColor="#27384c"
-                        android:textSize="16sp" />
+                      <TextView
+                          android:id="@+id/signOutButton"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:background="@drawable/slot_item_background"
+                          android:clickable="true"
+                          android:drawablePadding="15dp"
+                          android:gravity="center_vertical"
+                          android:paddingBottom="15dp"
+                          android:paddingEnd="15dp"
+                          android:paddingLeft="15dp"
+                          android:paddingRight="15dp"
+                          android:paddingStart="15dp"
+                          android:paddingTop="15dp"
+                          android:text="Sign Out"
+                          android:textColor="@android:color/white"
+                          android:textAlignment="center"
+                          android:textSize="16sp" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.35dp"
-                        android:layout_marginLeft="66dp"
-                        android:layout_marginStart="66dp"
-                        android:background="#c0c0c0" />
+                  <!--    <View
+                          android:layout_width="match_parent"
+                          android:layout_height="0.35dp"
+                          android:layout_marginStart="66dp"
+                          android:layout_marginLeft="66dp"
+                          android:background="#c0c0c0" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/slot_item_background"
-                        android:clickable="true"
-                        android:drawableLeft="@drawable/appinfo"
-                        android:drawablePadding="15dp"
-                        android:drawableStart="@drawable/appinfo"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="15dp"
-                        android:paddingEnd="15dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingStart="15dp"
-                        android:paddingTop="15dp"
-                        android:text="App Info"
-                        android:textColor="#27384c"
-                        android:textSize="16sp" />
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:background="@drawable/slot_item_background"
+                          android:clickable="true"
+                          android:drawableStart="@drawable/appinfo"
+                          android:drawableLeft="@drawable/appinfo"
+                          android:drawablePadding="15dp"
+                          android:gravity="center_vertical"
+                          android:paddingStart="15dp"
+                          android:paddingLeft="15dp"
+                          android:paddingTop="15dp"
+                          android:paddingEnd="15dp"
+                          android:paddingRight="15dp"
+                          android:paddingBottom="15dp"
+                          android:text="App Info"
+                          android:textColor="#27384c"
+                          android:textSize="16sp" />
+-->
+                  </LinearLayout>
 
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>-->
+              </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 

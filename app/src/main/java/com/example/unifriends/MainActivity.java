@@ -1,7 +1,10 @@
 package com.example.unifriends;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main";
     TextView welcomeMessage;
     String uid = "";
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,19 @@ public class MainActivity extends AppCompatActivity {
         getUserId();
         setProfile();
         welcomeMessage = findViewById(R.id.greeting_msg);
+
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+
+        TextView signOut = findViewById(R.id.signOutButton);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                sp.edit().putBoolean("logged",false).apply();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
     }
 
 
@@ -65,6 +82,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
 }
