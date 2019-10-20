@@ -1,6 +1,7 @@
 package com.example.unifriends.chat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.unifriends.MainActivity;
 import com.example.unifriends.R;
 
 import com.firebase.ui.auth.AuthUI;
@@ -29,36 +31,14 @@ public class ChatActivity extends AppCompatActivity {
 
     public static int SIGN_IN_REQUEST_CODE = 10;
     private FirebaseListAdapter<ChatMessage> adapter;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            // Start sign in/sign up activity
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(false)
-                            .build(),
-                    SIGN_IN_REQUEST_CODE
-            );
-
-        } else {
-            // User is already signed in. Therefore, display
-            // a welcome Toast
-            Toast.makeText(this,
-                    "Welcome " + FirebaseAuth.getInstance()
-                            .getCurrentUser()
-                            .getDisplayName(),
-                    Toast.LENGTH_LONG)
-                    .show();
-
-            // Load chat room contents
-           // displayChatMessages();
-        }
-
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+        displayChatMessages();
     }
 
     public void fabClick(View view) {
@@ -70,9 +50,7 @@ public class ChatActivity extends AppCompatActivity {
                 .getReference().child("messages")
                 .push()
                 .setValue(new ChatMessage(input.getText().toString(),
-                        Objects.requireNonNull(FirebaseAuth.getInstance()
-                                .getCurrentUser())
-                                .getDisplayName())
+                       sp.getString("name", ""))
                 );
 
         // Clear the input
@@ -132,11 +110,18 @@ public class ChatActivity extends AppCompatActivity {
                         "We couldn't sign you in. Please try again later.",
                         Toast.LENGTH_LONG)
                         .show();
-
-                // Close the app
                 finish();
             }
         }
+
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(ChatActivity.this, MainActivity.class));
+        finish();
 
     }
 

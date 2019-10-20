@@ -89,11 +89,13 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
                             welcomeMessage.setText(String.format("Welcome, %s!", doc.getString("name")));
+                            sp.edit().putString("name",doc.getString("name")).apply();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
     }
 
 }
