@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.unifriends.chat.ChatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main";
-    TextView welcomeMessage;
+
+
+    TextView welcomeMessage, signOut, chatActivity;
     String uid = "";
     SharedPreferences sp;
 
@@ -34,13 +37,22 @@ public class MainActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
-        TextView signOut = findViewById(R.id.signOutButton);
+        signOut = findViewById(R.id.signOutButton);
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 sp.edit().putBoolean("logged",false).apply();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+
+        chatActivity = findViewById(R.id.chatActivity);
+        chatActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
                 finish();
             }
         });

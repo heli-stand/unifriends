@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "581247798838-t2j57dur2hn94eesgeo0sb5am7mnc1nh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.unifriends",
+            "certificate_hash": "a01c17e333a77a765617e0e2f44115892cf70c43"
+          }
+        },
+        {
           "client_id": "581247798838-3r1guj17qva15tmcn6dvfalohp4v09vm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

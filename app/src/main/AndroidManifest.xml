@@ -56,6 +56,9 @@
         <activity
             android:name="com.example.unifriends.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.example.unifriends.chat.ChatActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

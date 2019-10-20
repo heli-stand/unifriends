@@ -200,7 +200,8 @@
                                 android:singleLine="true"
                                 android:text="Group Chat"
                                 android:textColor="#27384c"
-                                android:textSize="13.5sp" />
+                                android:textSize="13.5sp"
+                                android:id="@+id/chatActivity"/>
 
                         </FrameLayout>
 
