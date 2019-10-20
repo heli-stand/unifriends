@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         chatActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sp.edit().putBoolean("logged",true).apply();
                 startActivity(new Intent(MainActivity.this, ChatActivity.class));
                 finish();
             }

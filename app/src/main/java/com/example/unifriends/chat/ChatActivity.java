@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.unifriends.R;
 
+import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,9 +33,31 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_chat);
 
-        displayChatMessages();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            // Start sign in/sign up activity
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(false)
+                            .build(),
+                    SIGN_IN_REQUEST_CODE
+            );
+
+        } else {
+            // User is already signed in. Therefore, display
+            // a welcome Toast
+            Toast.makeText(this,
+                    "Welcome " + FirebaseAuth.getInstance()
+                            .getCurrentUser()
+                            .getDisplayName(),
+                    Toast.LENGTH_LONG)
+                    .show();
+
+            // Load chat room contents
+           // displayChatMessages();
+        }
 
     }
 
