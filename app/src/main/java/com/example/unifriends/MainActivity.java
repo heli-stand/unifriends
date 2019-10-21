@@ -1,17 +1,22 @@
 package com.example.unifriends;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main";
@@ -69,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     sp.edit().putBoolean("logged",true).apply();
                     startActivity(new Intent(MainActivity.this, ChatActivity.class));
-                    finish();
                 }
             });
         }
+
 
 
     }
@@ -83,16 +90,6 @@ public class MainActivity extends AppCompatActivity {
     private void getUserId() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
             uid = user.getUid();
         }
     }
@@ -108,10 +105,16 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
                             welcomeMessage.setText(String.format("Welcome, %s!", doc.getString("name")));
+                            setPhoto(doc.get("photo").toString());
                             sp.edit().putString("name",doc.getString("name")).apply();
+                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
+                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                         }
+
                     }
                 });
 
@@ -127,6 +130,30 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, Profile.class);
         intent.putExtra("userID", user.getUid());
         startActivity(intent);
+    }
+
+    private void setPhoto(String source){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference pathReference = storageRef.child(source);
+
+        final long ONE_MEGABYTE = 1024 * 1024 * 5;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                ImageView imageView = findViewById(R.id.profileImage);
+                imageView.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.d(TAG, exception.toString());
+            }
+        });
     }
 
 }

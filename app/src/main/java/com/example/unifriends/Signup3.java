@@ -65,6 +65,7 @@ public class Signup3 extends AppCompatActivity {
     }
 
     public void updateUserInfo(View view){
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 
         String degree = degreeSpinner.getSelectedItem().toString();
         String major = majorSpinner.getSelectedItem().toString();
@@ -73,7 +74,6 @@ public class Signup3 extends AppCompatActivity {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String id = mAuth.getUid();
-
 
 
         Log.d(TAG, id);
@@ -96,19 +96,24 @@ public class Signup3 extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                         startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
 
     }
 
-    public void onLoginClick(View View) {
+    public void onLoginClick(View view) {
         startActivity(new Intent(this, LoginActivity.class));
         overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
     }

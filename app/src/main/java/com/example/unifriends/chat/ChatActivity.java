@@ -44,6 +44,8 @@ public class ChatActivity extends AppCompatActivity {
     public void fabClick(View view) {
         EditText input = findViewById(R.id.input);
 
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
         // Read the input field and push a new instance
         // of ChatMessage to the Firebase database
         FirebaseDatabase.getInstance()
@@ -52,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
                 .setValue(new ChatMessage(input.getText().toString(),
                        sp.getString("name", ""))
                 );
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
         // Clear the input
         input.setText("");
@@ -91,6 +94,8 @@ public class ChatActivity extends AppCompatActivity {
 
         listOfMessages.setAdapter(adapter);
 
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
     }
 
     @Override
@@ -121,7 +126,6 @@ public class ChatActivity extends AppCompatActivity {
     {
         super.onBackPressed();
         startActivity(new Intent(ChatActivity.this, MainActivity.class));
-        finish();
 
     }
 

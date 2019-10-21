@@ -12,6 +12,17 @@
     android:focusableInTouchMode="true"
     android:gravity="center"
     android:layout_gravity="center">
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,6 +72,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
+                        android:layout_gravity="center_horizontal"
                         android:contentDescription="Image with faces to analyze"
                         app:layout_constraintBottom_toTopOf="@+id/button1"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -68,15 +80,13 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.742" />
 
-
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Choose Image"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/loginViewsMargin"
+                        android:layout_marginTop="@dimen/registerViewsMargin"
                         android:onClick="chooseImage"
                         />
 
@@ -91,16 +101,6 @@
                         android:onClick="updateUserInfo"
                         />
 
-
-                    <TextView
-                        style="@style/parent"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:textColor="@color/themeColor"
-                        android:textSize="17sp"
-                        android:text="Already have an account?"
-                        android:layout_marginTop="@dimen/registerViewsMargin"
-                        android:onClick="onLoginClick"/>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -121,89 +121,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-    <View
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="11dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/ic_side_bg"/>
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="287dp"
-        android:layout_height="295dp"
-        android:layout_above="@+id/button2"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:contentDescription="Image with faces to analyze"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="175dp"
-        android:layout_height="42dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_back_img"
-        android:layout_marginRight="11dp"
-        android:layout_marginBottom="30dp"
-        android:onClick="onLoginClick"
-        android:adjustViewBounds="false"/>
 </RelativeLayout>
-
-    <!-- <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="287dp"
-            android:layout_height="295dp"
-            android:layout_above="@+id/button1"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="Image with faces to analyze"
-            app:layout_constraintBottom_toTopOf="@+id/button1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.742" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="175dp"
-            android:layout_height="42dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="chooseImage"
-            android:text="Choose Image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.594" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="updateUserInfo"
-            android:text="Next"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.76" />-->

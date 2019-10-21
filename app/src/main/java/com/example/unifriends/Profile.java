@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,6 +31,7 @@ public class Profile extends AppCompatActivity {
     private String userID;
     private final String TAG = "Profile";
     private String facialID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class Profile extends AppCompatActivity {
         getData(userID);
     }
 
-    private void getData(String userID){
+    private void getData(String userID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(userID);
 
@@ -54,39 +56,57 @@ public class Profile extends AppCompatActivity {
                                 , document.get("email").toString());
                         setFacialID(document.get("facialID").toString());
                         setPhoto(document.get("photo").toString());
+
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                     } else {
                         Log.d(TAG, "No such document");
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
+                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                 }
             }
         });
     }
 
-    private void setText(String name, String uni, String major, String degree, String email){
-        EditText editText = findViewById(R.id.editText);
-        String display = name + uni + major+ degree + email;
-        editText.setText(display);
+    private void setText(String name, String uni, String major, String degree, String email) {
+        TextView tvName, tvUni, tvMajor, tvdegree, tvEmail;
+
+        tvName = findViewById(R.id.tvName);
+        tvEmail = findViewById(R.id.tvEmail);
+        tvUni = findViewById(R.id.tvUni);
+        tvMajor = findViewById(R.id.tvMajor);
+        tvdegree = findViewById(R.id.tvDegree);
+
+        tvName.setText(name);
+        tvEmail.setText(email);
+        tvUni.setText(uni);
+        tvMajor.setText(major);
+        tvdegree.setText(degree);
+
     }
 
-    private void setFacialID(String facialID){
+    private void setFacialID(String facialID) {
         this.facialID = facialID;
     }
 
-    private void setPhoto(String source){
+    private void setPhoto(String source) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
         StorageReference pathReference = storageRef.child(source);
 
         final long ONE_MEGABYTE = 1024 * 1024 * 5;
-         pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                ImageView imageView = findViewById(R.id.imageView1);
+                ImageView imageView = findViewById(R.id.profileImage);
                 imageView.setImageBitmap(bitmap);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -99,8 +119,7 @@ public class Profile extends AppCompatActivity {
     }
 
 
-
-    public void goToVerification(View view){
+    public void goToVerification(View view) {
         Intent intent = new Intent(Profile.this, Verification.class);
         intent.putExtra("facialID", facialID);
         startActivity(intent);

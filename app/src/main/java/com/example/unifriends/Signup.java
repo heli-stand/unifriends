@@ -58,7 +58,7 @@ public class Signup extends AppCompatActivity{
         passwordEditText = findViewById(R.id.editText2);
     }
 
-    public void onLoginClick(View View) {
+    public void onLoginClick(View view) {
         startActivity(new Intent(this, LoginActivity.class));
         overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
     }
@@ -71,6 +71,8 @@ public class Signup extends AppCompatActivity{
 
         final String email = emailEditText.getText().toString();
         final String password = passwordEditText.getText().toString();
+
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -91,6 +93,8 @@ public class Signup extends AppCompatActivity{
                                     Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
                         }
+
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
                         // ...
                     }

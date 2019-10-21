@@ -15,7 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/loadingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
 
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,25 +38,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/grad">
 
                 <!--</RelativeLayout>-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    app:cardCornerRadius="50dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/colorPrimaryDark"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    app:cardCornerRadius="50dp"
+                    app:strokeColor="@color/colorPrimaryDark"
+                    app:strokeWidth="1dp">
+
                     <ImageView
+                        android:id="@+id/profileImage"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:id="@+id/profileImage"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/greg"
                         android:layout_gravity="center_horizontal"
-                        />
+                        android:scaleType="fitCenter"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
@@ -54,15 +64,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="35dp"
                     android:layout_marginTop="10dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:layout_marginBottom="35dp"
                     android:paddingStart="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingRight="16dp"
                     android:text="Welcome!"
                     android:textColor="#27384c"
-                    android:textSize="18.5sp"/>
+                    android:textSize="18.5sp" />
 
             </LinearLayout>
 
@@ -88,16 +98,15 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0.125dp"
                         android:layout_marginEnd="0.125dp"
                         android:layout_marginRight="0.125dp"
+                        android:layout_marginBottom="0.125dp"
                         android:layout_weight="0.5"
                         app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="0dp"
                         app:cardElevation="0.65dp">
 
                         <FrameLayout
-                            android:id="@+id/play_history"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/slot_item_background"
@@ -107,10 +116,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
-                                android:drawablePadding="10dp"
+                                android:layout_marginBottom="15dp"
                                 android:drawableTop="@drawable/ic_person_add"
+                                android:drawablePadding="10dp"
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:singleLine="true"
@@ -125,10 +134,10 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0.125dp"
-                        android:layout_marginLeft="0.125dp"
                         android:layout_marginStart="0.125dp"
+                        android:layout_marginLeft="0.125dp"
                         android:layout_marginTop="0.125dp"
+                        android:layout_marginBottom="0.125dp"
                         android:layout_weight="0.5"
                         app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="0dp"
@@ -145,14 +154,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:clickable="true"
+                                android:drawableTop="@drawable/ic_person"
                                 android:drawablePadding="10dp"
-                                android:drawableTop="@drawable/ic_event_available"
                                 android:gravity="center"
                                 android:maxLines="1"
+                                android:onClick="goToProfile"
                                 android:singleLine="true"
-                                android:text="Event"
+                                android:text="My Profile"
                                 android:textColor="#27384c"
                                 android:textSize="13.5sp" />
 
@@ -171,10 +182,10 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="2.5dp"
+                        android:layout_marginTop="0.125dp"
                         android:layout_marginEnd="0.125dp"
                         android:layout_marginRight="0.125dp"
-                        android:layout_marginTop="0.125dp"
+                        android:layout_marginBottom="2.5dp"
                         android:layout_weight="0.5"
                         app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="0dp"
@@ -188,20 +199,20 @@
                             android:clickable="true">
 
                             <TextView
+                                android:id="@+id/chatActivity"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
-                                android:drawablePadding="10dp"
+                                android:layout_marginBottom="15dp"
                                 android:drawableTop="@drawable/ic_chat_bubble_outline"
+                                android:drawablePadding="10dp"
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:text="Group Chat"
                                 android:textColor="#27384c"
-                                android:textSize="13.5sp"
-                                android:id="@+id/chatActivity"/>
+                                android:textSize="13.5sp" />
 
                         </FrameLayout>
 
@@ -210,10 +221,10 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="2.5dp"
-                        android:layout_marginLeft="0.125dp"
                         android:layout_marginStart="0.125dp"
+                        android:layout_marginLeft="0.125dp"
                         android:layout_marginTop="0.125dp"
+                        android:layout_marginBottom="2.5dp"
                         android:layout_weight="0.5"
                         app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="0dp"
@@ -227,20 +238,23 @@
                             android:clickable="true">
 
                             <TextView
+                                android:id="@+id/facialSearch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginBottom="15dp"
                                 android:layout_marginTop="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:clickable="true"
+                                android:drawableTop="@drawable/ic_find_in_page"
                                 android:drawablePadding="10dp"
-                                android:drawableTop="@drawable/ic_verified_user"
                                 android:gravity="center"
                                 android:maxLines="1"
+                                android:onClick="goToFacialSearch"
                                 android:singleLine="true"
-                                android:text="My Profile"
+                                android:text="Facial Search"
                                 android:textColor="#27384c"
-                                android:textSize="13.5sp"
-                                android:onClick="goToProfile"/>
+                                android:textSize="13.5sp" />
+
 
                         </FrameLayout>
 
@@ -248,78 +262,71 @@
 
                 </LinearLayout>
 
+
             </LinearLayout>
 
-              <com.google.android.material.card.MaterialCardView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginBottom="15dp"
-                  android:layout_marginTop="12.5dp"
-                  app:cardBackgroundColor="@android:color/holo_red_dark"
-                  app:cardCornerRadius="0dp"
-                  app:cardElevation="0.65dp">
-
-                  <LinearLayout
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical">
-
-                      <TextView
-                          android:id="@+id/signOutButton"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:background="@drawable/slot_item_background"
-                          android:clickable="true"
-                          android:drawablePadding="15dp"
-                          android:gravity="center_vertical"
-                          android:paddingBottom="15dp"
-                          android:paddingEnd="15dp"
-                          android:paddingLeft="15dp"
-                          android:paddingRight="15dp"
-                          android:paddingStart="15dp"
-                          android:paddingTop="15dp"
-                          android:text="Sign Out"
-                          android:textColor="@android:color/white"
-                          android:textAlignment="center"
-                          android:textSize="16sp"
-                          />
-
-                  <!--    <View
-                          android:layout_width="match_parent"
-                          android:layout_height="0.35dp"
-                          android:layout_marginStart="66dp"
-                          android:layout_marginLeft="66dp"
-                          android:background="#c0c0c0" />
-
-                      <TextView
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:background="@drawable/slot_item_background"
-                          android:clickable="true"
-                          android:drawableStart="@drawable/appinfo"
-                          android:drawableLeft="@drawable/appinfo"
-                          android:drawablePadding="15dp"
-                          android:gravity="center_vertical"
-                          android:paddingStart="15dp"
-                          android:paddingLeft="15dp"
-                          android:paddingTop="15dp"
-                          android:paddingEnd="15dp"
-                          android:paddingRight="15dp"
-                          android:paddingBottom="15dp"
-                          android:text="App Info"
-                          android:textColor="#27384c"
-                          android:textSize="16sp" />
--->
-                  </LinearLayout>
-
-              </com.google.android.material.card.MaterialCardView>
-
-            <Button
-                android:id="@+id/button4"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Facial Search"
-                android:onClick="goToFacialSearch"/>
+                android:layout_marginTop="12.5dp"
+                android:layout_marginBottom="15dp"
+                app:cardBackgroundColor="@android:color/holo_red_dark"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0.65dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/signOutButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/slot_item_background"
+                        android:clickable="true"
+                        android:drawablePadding="15dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="15dp"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="15dp"
+                        android:text="Sign Out"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
+
+                    <!--    <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.35dp"
+                            android:layout_marginStart="66dp"
+                            android:layout_marginLeft="66dp"
+                            android:background="#c0c0c0" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/slot_item_background"
+                            android:clickable="true"
+                            android:drawableStart="@drawable/appinfo"
+                            android:drawableLeft="@drawable/appinfo"
+                            android:drawablePadding="15dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="15dp"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingEnd="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="App Info"
+                            android:textColor="#27384c"
+                            android:textSize="16sp" />
+  -->
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 

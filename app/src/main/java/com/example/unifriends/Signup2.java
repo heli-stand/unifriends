@@ -77,7 +77,7 @@ public class Signup2 extends AppCompatActivity {
         }
     }
 
-    public void onLoginClick(View View) {
+    public void onLoginClick(View view) {
         startActivity(new Intent(this, LoginActivity.class));
         overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
     }
@@ -201,6 +201,9 @@ public class Signup2 extends AppCompatActivity {
 
     public void updateUserInfo(View view){
 
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://unifriends-d63b5.appspot.com");
         // Create a reference to "mountains.jpg"
@@ -215,6 +218,8 @@ public class Signup2 extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                 // Handle unsuccessful uploads
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -225,6 +230,8 @@ public class Signup2 extends AppCompatActivity {
                 Log.d(TAG, "Image upload done");
                 Intent intent = new Intent(Signup2.this, Signup3.class);
                 intent.putExtra("facialID", facialID.toString());
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
                 startActivity(intent);
             }
         });

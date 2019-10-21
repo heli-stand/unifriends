@@ -30,7 +30,7 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     style="@style/viewParent.headerText.NoMode"
-                    android:text="UNI FRIEND \nLogin\with picture"/>
+                    android:text="UNI FRIEND \nLogin\nwith picture"/>
 
                 <ImageView
                     android:layout_width="wrap_content"

@@ -111,12 +111,6 @@
                         android:spinnerMode="dialog"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         />
-                    <!--<Spinner-->
-                    <!--style="@style/parent"-->
-                    <!--android:id="@+id/planets_spinner"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:autofillHints="Select Degree"/>-->
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRegister"
@@ -127,22 +121,8 @@
                         android:layout_marginTop="@dimen/registerViewsMargin"
                         android:onClick="updateUserInfo"
                         />
-
-
-                    <TextView
-                        style="@style/parent"
-                        android:textAlignment="center"
-                        android:textStyle="bold"
-                        android:textColor="@color/themeColor"
-                        android:textSize="17sp"
-                        android:text="Already have an account?"
-                        android:layout_marginTop="@dimen/registerViewsMargin"
-                        android:onClick="onLoginClick"/>
-
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -156,130 +136,10 @@
                     android:background="@color/whiteTextColor"
                     android:layout_weight="3"/>
 
-                <TextView
-                    style="@style/viewParent.headerText.NoMode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/whiteTextColor"
-                    android:text="Use other Methods"
-                    android:layout_weight="6"
-                    android:textSize="12sp"
-                    android:textAlignment="center"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/whiteTextColor"
-                    android:layout_weight="3"/>
-
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-    <View
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="11dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/ic_side_bg"/>
-    <ImageView
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_back_img"
-        android:layout_marginRight="11dp"
-        android:layout_marginBottom="30dp"
-        android:onClick="onLoginClick"
-        android:adjustViewBounds="false"/>
+
 </RelativeLayout>
-<!--
-<EditText
-android:id="@+id/editText3"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginStart="8dp"
-android:layout_marginLeft="8dp"
-android:layout_marginTop="8dp"
-android:layout_marginEnd="8dp"
-android:layout_marginRight="8dp"
-android:layout_marginBottom="8dp"
-android:ems="10"
-android:hint="Full Name"
-android:inputType="textPersonName"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintVertical_bias="0.355" />
 
-<EditText
-android:id="@+id/editText4"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginStart="8dp"
-android:layout_marginLeft="8dp"
-android:layout_marginTop="8dp"
-android:layout_marginEnd="8dp"
-android:layout_marginRight="8dp"
-android:layout_marginBottom="8dp"
-android:ems="10"
-android:hint="University"
-android:inputType="textPersonName"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintVertical_bias="0.458" />
-
-<Spinner
-android:id="@+id/degree_spinner"
-android:layout_width="253dp"
-android:layout_height="71dp"
-android:layout_marginStart="8dp"
-android:layout_marginLeft="8dp"
-android:layout_marginTop="8dp"
-android:layout_marginEnd="8dp"
-android:layout_marginRight="8dp"
-android:layout_marginBottom="8dp"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintVertical_bias="0.636" />
-
-<Spinner
-android:id="@+id/major_spinner"
-android:layout_width="253dp"
-android:layout_height="71dp"
-android:layout_marginStart="8dp"
-android:layout_marginLeft="8dp"
-android:layout_marginTop="8dp"
-android:layout_marginEnd="8dp"
-android:layout_marginRight="8dp"
-android:layout_marginBottom="8dp"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintVertical_bias="0.795" />
-
-<Button
-android:id="@+id/button3"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginStart="8dp"
-android:layout_marginLeft="8dp"
-android:layout_marginTop="8dp"
-android:layout_marginEnd="8dp"
-android:layout_marginRight="8dp"
-android:layout_marginBottom="8dp"
-android:onClick="updateUserInfo"
-android:text="Next"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintHorizontal_bias="0.498"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintVertical_bias="0.917" />-->
