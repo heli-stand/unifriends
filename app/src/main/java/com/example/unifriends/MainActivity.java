@@ -1,6 +1,13 @@
 package com.example.unifriends;
 
 import android.content.Intent;
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,15 +29,29 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main";
 
 
+//    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final int RC_SIGN_IN = 123;
+    private FirebaseUser user;
     TextView welcomeMessage, signOut, chatActivity;
     String uid = "";
     SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null){
+            startActivity(new Intent(MainActivity.this, Login.class));
+        }
+    }
+
+
+    public void signout(View view){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(MainActivity.this, Login.class));
         getUserId();
         setProfile();
         welcomeMessage = findViewById(R.id.greeting_msg);
