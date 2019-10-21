@@ -96,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Login failed! Please try again later", Toast.LENGTH_LONG).show();
-
                         }
                     }
                 });
