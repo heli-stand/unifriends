@@ -84,43 +84,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="1">
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="0.125dp"
-                        android:layout_marginLeft="0.125dp"
-                        android:layout_marginStart="0.125dp"
-                        android:layout_marginTop="0.125dp"
-                        android:layout_weight="0.5"
-                        app:cardBackgroundColor="@android:color/white"
-                        app:cardCornerRadius="0dp"
-                        app:cardElevation="0.65dp">
-
-                        <FrameLayout
-                            android:id="@+id/pay_history"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/slot_item_background"
-                            android:clickable="true">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginBottom="15dp"
-                                android:layout_marginTop="15dp"
-                                android:drawablePadding="10dp"
-                                android:drawableTop="@drawable/ic_event_available"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:text="Event"
-                                android:textColor="#27384c"
-                                android:textSize="13.5sp" />
-
-                        </FrameLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
@@ -159,6 +122,43 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0.125dp"
+                        android:layout_marginLeft="0.125dp"
+                        android:layout_marginStart="0.125dp"
+                        android:layout_marginTop="0.125dp"
+                        android:layout_weight="0.5"
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0.65dp">
+
+                        <FrameLayout
+                            android:id="@+id/pay_history"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/slot_item_background"
+                            android:clickable="true">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginTop="15dp"
+                                android:drawablePadding="10dp"
+                                android:drawableTop="@drawable/ic_event_available"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:text="Event"
+                                android:textColor="#27384c"
+                                android:textSize="13.5sp" />
+
+                        </FrameLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
 
