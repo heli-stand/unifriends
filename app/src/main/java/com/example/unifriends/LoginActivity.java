@@ -66,9 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeUI() {
         emailTV = findViewById(R.id.editTextEmail);
         passwordTV = findViewById(R.id.editTextPassword);
-
         loginBtn = findViewById(R.id.btnLogin);
-
     }
 
     public void login() {

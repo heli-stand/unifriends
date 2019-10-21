@@ -58,6 +58,10 @@ public class Signup extends AppCompatActivity{
         passwordEditText = findViewById(R.id.editText2);
     }
 
+    public void onLoginClick(View View) {
+        startActivity(new Intent(this, LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
+    }
 
     public void nextStep(View view) {
         // [START verify_with_code]

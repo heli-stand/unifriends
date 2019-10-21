@@ -77,6 +77,10 @@ public class Signup2 extends AppCompatActivity {
         }
     }
 
+    public void onLoginClick(View View) {
+        startActivity(new Intent(this, LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
+    }
 
     private UUID detectAndFrame(final Bitmap imageBitmap) {
 

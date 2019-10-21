@@ -30,7 +30,7 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     style="@style/viewParent.headerText.NoMode"
-                    android:text="Already \nhave an \nAccount?"/>
+                    android:text="UNI FRIEND \n\nLogin"/>
 
                 <ImageView
                     android:layout_width="wrap_content"

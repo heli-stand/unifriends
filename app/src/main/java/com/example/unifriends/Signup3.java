@@ -42,10 +42,10 @@ public class Signup3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup3);
 
-        nameEditText = findViewById(R.id.editText3);
-        uniEditText = findViewById(R.id.editText4);
+        nameEditText = findViewById(R.id.editTextName);
+        uniEditText = findViewById(R.id.editTextUniName);
 
-        degreeSpinner = findViewById(R.id.degree_spinner);
+        degreeSpinner = findViewById(R.id.degreeSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> degreeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.degree_array, android.R.layout.simple_spinner_item);
@@ -54,7 +54,7 @@ public class Signup3 extends AppCompatActivity {
         // Apply the adapter to the spinner
         degreeSpinner.setAdapter(degreeAdapter);
 
-        majorSpinner = findViewById(R.id.major_spinner);
+        majorSpinner = findViewById(R.id.majorSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> majorAdapter = ArrayAdapter.createFromResource(this,
                 R.array.major_array, android.R.layout.simple_spinner_item);
@@ -105,4 +105,11 @@ public class Signup3 extends AppCompatActivity {
                 });
 
     }
+
+    public void onLoginClick(View View) {
+        startActivity(new Intent(this, LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
+    }
+
+
 }
