@@ -20,14 +20,10 @@
         <activity android:name=".Signup2" />
         <activity android:name=".Signup" />
         <activity android:name=".Login" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".MobileAuth" />
+
 
         <activity
             android:name=".friendFinder.Verification"
-            android:label="@string/title_activity_verification"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".friendFinder.FindFriends" />
         <activity android:name=".friendFinder.FriendProfile"/>
@@ -45,7 +41,7 @@
 
         <activity
             android:name=".friendFinder.FriendFinderMap"
-            android:label="@string/title_activity_friend_finder_map" />
+            android:label="Map" />
         <activity android:name=".dashboard.Dashboard" />
         <activity
             android:name="com.example.unifriends.LoginActivity"
