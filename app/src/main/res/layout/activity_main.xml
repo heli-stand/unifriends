@@ -237,9 +237,10 @@
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:text="Verify Friend"
+                                android:text="My Profile"
                                 android:textColor="#27384c"
-                                android:textSize="13.5sp" />
+                                android:textSize="13.5sp"
+                                android:onClick="goToProfile"/>
 
                         </FrameLayout>
 
@@ -280,7 +281,8 @@
                           android:text="Sign Out"
                           android:textColor="@android:color/white"
                           android:textAlignment="center"
-                          android:textSize="16sp" />
+                          android:textSize="16sp"
+                          />
 
                   <!--    <View
                           android:layout_width="match_parent"
