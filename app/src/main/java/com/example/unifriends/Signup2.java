@@ -77,6 +77,10 @@ public class Signup2 extends AppCompatActivity {
         }
     }
 
+    public void onLoginClick(View View) {
+        startActivity(new Intent(this, LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
+    }
 
     private UUID detectAndFrame(final Bitmap imageBitmap) {
 
@@ -198,7 +202,7 @@ public class Signup2 extends AppCompatActivity {
     public void updateUserInfo(View view){
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://unifriends-d63b5.appspot.com/>");
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://unifriends-d63b5.appspot.com");
         // Create a reference to "mountains.jpg"
 
         StorageReference mountainsRef = storageRef.child("usersImage/" + FirebaseAuth.getInstance().getUid() + ".jpg");
