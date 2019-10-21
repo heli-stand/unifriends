@@ -29,8 +29,8 @@ public class Login extends AppCompatActivity {
 
     public void login(View view){
 
-        String email = ((TextView)findViewById(R.id.editText3)).getText().toString();
-        String password = ((TextView)findViewById(R.id.editText4)).getText().toString();
+        String email = ((TextView)findViewById(R.id.editTextEmail)).getText().toString();
+        String password = ((TextView)findViewById(R.id.editTextPassword)).getText().toString();
 
         final FirebaseAuth mAuth =  FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email, password)
