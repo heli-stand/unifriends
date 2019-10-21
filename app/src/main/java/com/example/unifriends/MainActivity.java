@@ -45,34 +45,36 @@ public class MainActivity extends AppCompatActivity {
 
         if (user == null){
             startActivity(new Intent(MainActivity.this, Login.class));
+        }else{
+            getUserId();
+            setProfile();
+            welcomeMessage = findViewById(R.id.greeting_msg);
+
+            sp = getSharedPreferences("login", MODE_PRIVATE);
+
+            signOut = findViewById(R.id.signOutButton);
+            signOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseAuth.getInstance().signOut();
+                    sp.edit().putBoolean("logged",false).apply();
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+                }
+            });
+
+            chatActivity = findViewById(R.id.chatActivity);
+            chatActivity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sp.edit().putBoolean("logged",true).apply();
+                    startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                    finish();
+                }
+            });
         }
 
-        getUserId();
-        setProfile();
-        welcomeMessage = findViewById(R.id.greeting_msg);
 
-        sp = getSharedPreferences("login", MODE_PRIVATE);
-
-        signOut = findViewById(R.id.signOutButton);
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                sp.edit().putBoolean("logged",false).apply();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-
-            }
-        });
-
-        chatActivity = findViewById(R.id.chatActivity);
-        chatActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putBoolean("logged",true).apply();
-                startActivity(new Intent(MainActivity.this, ChatActivity.class));
-                finish();
-            }
-        });
     }
 
 
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setProfile() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         db.collection("users")
                 .document(uid)
                 .get()
@@ -115,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
                 });
 
     }
+
+    public void goToFacialSearch(View view){
+        Intent intent = new Intent(MainActivity.this, FacialSearch.class);
+        startActivity(intent);
+    }
+
 
     public void goToProfile(View view){
         Intent intent = new Intent(MainActivity.this, Profile.class);
