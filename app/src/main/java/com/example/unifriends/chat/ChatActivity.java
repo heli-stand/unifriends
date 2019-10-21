@@ -37,6 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
         sp = getSharedPreferences("login", MODE_PRIVATE);
         displayChatMessages();
     }
@@ -62,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void displayChatMessages() {
-
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         ListView listOfMessages = findViewById(R.id.list_of_messages);
         Query query = FirebaseDatabase.getInstance().getReference().child("messages");
         // Get references to the views of message.xml
@@ -89,12 +90,14 @@ public class ChatActivity extends AppCompatActivity {
                 // Format the date before showing it
                 messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
                         model.getMessageTime()));
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
             }
         };
 
         listOfMessages.setAdapter(adapter);
 
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
     }
 
