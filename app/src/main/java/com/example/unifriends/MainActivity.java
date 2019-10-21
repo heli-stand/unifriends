@@ -119,4 +119,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void goToFacialSearch(View view){
+        startActivity(new Intent(MainActivity.this, FacialSearch.class));
+    }
+
+
 }
