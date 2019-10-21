@@ -30,7 +30,7 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     style="@style/viewParent.headerText.NoMode"
-                    android:text="UNI FRIEND \n\nLogin"/>
+                    android:text="UNI FRIENDS \n\nLogin"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
                     style="@style/viewParent.headerText.NoMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Use other Methods"
+                    android:text="Use picture to login"
                     android:layout_weight="6"
                     android:textSize="12sp"
                     android:textAlignment="center"/>
@@ -131,13 +131,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/ic_insert_photo"
                     android:onClick="facialLogin"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_google_plus"
-                    android:layout_marginLeft="10dp"/>
             </LinearLayout>
 
         </LinearLayout>
