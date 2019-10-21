@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginClick(View View) {
-        startActivity(new Intent(this, RegisterActivity.class));
+        startActivity(new Intent(this, Signup.class));
         overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
     }
 
@@ -102,6 +102,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-
+    public void facialLogin(View view){startActivity(new Intent(LoginActivity.this,
+            facialLogin.class)); }
 }
