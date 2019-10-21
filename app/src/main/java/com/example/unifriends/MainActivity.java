@@ -46,12 +46,7 @@ public class MainActivity extends AppCompatActivity {
         if (user == null){
             startActivity(new Intent(MainActivity.this, Login.class));
         }
-    }
 
-
-    public void signout(View view){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(MainActivity.this, Login.class));
         getUserId();
         setProfile();
         welcomeMessage = findViewById(R.id.greeting_msg);
@@ -65,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 sp.edit().putBoolean("logged",false).apply();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+
             }
         });
 
@@ -79,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     private void getUserId() {
@@ -117,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    public void goToProfile(View view){
+        Intent intent = new Intent(MainActivity.this, Profile.class);
+        intent.putExtra("userID", user.getUid());
+        startActivity(intent);
     }
 
 }
