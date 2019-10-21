@@ -69,10 +69,12 @@ public class Signup3 extends AppCompatActivity {
         String degree = degreeSpinner.getSelectedItem().toString();
         String major = majorSpinner.getSelectedItem().toString();
         String name = nameEditText.getText().toString();
-        String uni = uniEditText.getText().toString();
+        String uni = uniEditText.getText().toString().toUpperCase();
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String id = mAuth.getUid();
+
+
 
         Log.d(TAG, id);
 

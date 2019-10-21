@@ -258,4 +258,9 @@ public class facialLogin extends AppCompatActivity {
                 });
     }
 
+    public void onLoginClick(View View) {
+        startActivity(new Intent(this, LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
+    }
+
 }
