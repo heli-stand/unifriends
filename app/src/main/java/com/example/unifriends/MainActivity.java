@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+
+
         if (user == null){
             startActivity(new Intent(MainActivity.this, Login.class));
         }else{
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToFindFriends(View view) {
         Intent intent = new Intent(MainActivity.this, FindFriends.class);
+        intent.putExtra("userID", user.getUid());
         startActivity(intent);
     }
 

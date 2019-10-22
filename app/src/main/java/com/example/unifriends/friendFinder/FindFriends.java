@@ -12,24 +12,42 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.unifriends.R;
 import com.example.unifriends.groups.createGroup;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.unifriends.groups.createGroup.allUsersSubjects;
+import static com.example.unifriends.groups.createGroup.usersSubjects;
+
+
 public class FindFriends extends AppCompatActivity {
 
 
+    public String userID;
     String[] NAMES = {"Alexis Mitchell", "Bec Cartright", "Chloe Diamond", "Greg Johnson", "Mike Stewart", "Sam Smith", "Steve Hawkins"};
     int[] IMAGES = {R.drawable.alexis, R.drawable.bec, R.drawable.chloe, R.drawable.greg, R.drawable.mike, R.drawable.sam, R.drawable.steve};
     String[] LOCATIONS = {"-37.798332, 144.958660", "-37.797782, 144.959302","-37.798344, 144.961287", "-37.799477, 144.958903", "-37.799570, 144.961666", "-37.797946, 144.962282", "-37.797056, 144.963586" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        userID = getIntent().getStringExtra("userID");
+
+        getAllUsers();
+        getUsersSubjects();
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends2);
 
@@ -77,6 +95,60 @@ public class FindFriends extends AppCompatActivity {
 
     }
 
+    public void getUsersSubjects() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final DocumentReference docRef = db.collection("users").document(userID);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        Log.i("subjects tester", document.get("subjects").toString());
+                        String[] subjects = document.get("subjects").toString().split("\\S\\w+");
+                        for(String s: subjects) {
+                            usersSubjects.add(s);
+                        }
+
+                    } else {
+                        Log.i("error", "No such document");
+
+
+                    }
+                } else {
+                    Log.i("error", "get failed with ", task.getException());
+
+
+                }
+            }
+        });
+    }
+
+    public void getAllUsers() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    QuerySnapshot results = task.getResult();
+
+                    List<DocumentSnapshot> list = results.getDocuments();
+
+                    for(DocumentSnapshot d: list) {
+                        Log.i("result", d.getId());
+                        String[] subjects = d.get("subjects").toString().split("\\S\\w+");
+                        allUsersSubjects.put(d.getId(), subjects);
+                    }
+                }
+
+            }
+
+
+        });
+    }
+
     public void gotoProfile(Friend f) {
         Log.i("User selected: ", f.toString());
         Intent intent = new Intent(this, FriendProfile.class);
@@ -88,6 +160,7 @@ public class FindFriends extends AppCompatActivity {
 
     public void goToCreateGroup(View view) {
         Intent intent = new Intent(this, createGroup.class);
+        intent.putExtra("userID", userID);
         startActivity(intent);
     }
 
