@@ -57,6 +57,11 @@ public class Calendar extends AppCompatActivity {
 
 
 
+        editDate.addTextChangedListener(loginTextWatcher);
+        editName.addTextChangedListener(loginTextWatcher);
+        editSubject.addTextChangedListener(loginTextWatcher);
+        editDescription.addTextChangedListener(loginTextWatcher);
+        editTime.addTextChangedListener(loginTextWatcher);
 
 
 
