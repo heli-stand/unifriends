@@ -117,7 +117,6 @@
     <string name="login_text">Login</string>
     <string name="register_text">Register</string>
 
-
     <string-array name="degree_array">
         <item>Master</item>
         <item>Bachelor</item>
@@ -132,16 +131,4 @@
         <item>Information System</item>
     </string-array>
 
-    <string-array name="teams">
-        <item>India</item>
-        <item>South Africa</item>
-        <item>Australia</item>
-        <item>England</item>
-        <item>New Zealand</item>
-        <item>Sri Lanka</item>
-        <item>Pakistan</item>
-        <item>West Indies</item>
-        <item>Bangladesh</item>
-        <item>Ireland</item>
-    </string-array>
 </resources>
