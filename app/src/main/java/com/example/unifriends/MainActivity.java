@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import com.example.unifriends.friendFinder.FindFriends;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        Log.i("current user", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
 
 
     }
@@ -129,6 +132,11 @@ public class MainActivity extends AppCompatActivity {
     public void goToProfile(View view){
         Intent intent = new Intent(MainActivity.this, Profile.class);
         intent.putExtra("userID", user.getUid());
+        startActivity(intent);
+    }
+
+    public void goToFindFriends(View view) {
+        Intent intent = new Intent(MainActivity.this, FindFriends.class);
         startActivity(intent);
     }
 

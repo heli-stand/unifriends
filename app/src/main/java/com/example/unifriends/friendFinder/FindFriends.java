@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.unifriends.R;
+import com.example.unifriends.groups.createGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,6 +83,11 @@ public class FindFriends extends AppCompatActivity {
         intent.putExtra("name", f.getName());
         intent.putExtra("img", f.getImg());
         intent.putExtra("interests", (ArrayList<String>) f.getInterests());
+        startActivity(intent);
+    }
+
+    public void goToCreateGroup(View view) {
+        Intent intent = new Intent(this, createGroup.class);
         startActivity(intent);
     }
 
