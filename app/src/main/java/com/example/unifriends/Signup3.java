@@ -65,7 +65,7 @@ public class Signup3 extends AppCompatActivity {
     }
 
     public void updateUserInfo(View view){
-        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+//        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 
         String degree = degreeSpinner.getSelectedItem().toString();
         String major = majorSpinner.getSelectedItem().toString();
@@ -75,7 +75,6 @@ public class Signup3 extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String id = mAuth.getUid();
 
-
         Log.d(TAG, id);
 
         Map<String, Object> update = new HashMap<>();
@@ -83,7 +82,7 @@ public class Signup3 extends AppCompatActivity {
         update.put("major", major);
         update.put("name", name);
         update.put("uni", uni);
-        update.put("photo", "usersImage/" + FirebaseAuth.getInstance().getUid() + ".jpg");
+        update.put("photo", "usersImage/" + id + ".jpg");
         update.put("facialID", getIntent().getStringExtra("facialID"));
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -94,10 +93,10 @@ public class Signup3 extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent intent = new Intent(getApplicationContext(), signup4.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+//                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
                         startActivity(intent);
                     }
@@ -105,7 +104,7 @@ public class Signup3 extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+//                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
                         Log.w(TAG, "Error writing document", e);
                     }
