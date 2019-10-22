@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import com.example.unifriends.events.Calendar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -154,6 +155,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, exception.toString());
             }
         });
+    }
+
+    public void goToEvent(View view){
+        Intent intent = new Intent(MainActivity.this, Calendar.class);
+        startActivity(intent);
     }
 
 }

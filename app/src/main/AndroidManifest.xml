@@ -82,6 +82,9 @@
         <activity
             android:name=".chat.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".events.Calendar"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
