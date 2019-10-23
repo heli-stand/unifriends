@@ -56,7 +56,6 @@ public class Calendar extends AppCompatActivity {
         buttonConfirm = findViewById(R.id.button_confirm);
 
 
-
         editDate.addTextChangedListener(loginTextWatcher);
         editName.addTextChangedListener(loginTextWatcher);
         editSubject.addTextChangedListener(loginTextWatcher);
