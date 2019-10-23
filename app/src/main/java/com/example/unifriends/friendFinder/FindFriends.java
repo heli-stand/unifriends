@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.example.unifriends.groups.createGroup.allUsers;
+import static com.example.unifriends.groups.createGroup.allUsersIdName;
 import static com.example.unifriends.groups.createGroup.allUsersSubjects;
 import static com.example.unifriends.groups.createGroup.usersSubjects;
 
@@ -53,7 +54,7 @@ public class FindFriends extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends2);
 
-        ListView listView = (ListView)findViewById(R.id.friendsbysublist);
+        ListView listView = (ListView)findViewById(R.id.allUsers);
 
         // Build list of friends with mock data
         ArrayList<Friend> friends = new ArrayList<>();
@@ -110,7 +111,10 @@ public class FindFriends extends AppCompatActivity {
                     if (document.exists()) {
 
                         Log.i("subjects tester", document.get("subjects").toString());
-                        String[] subjects = document.get("subjects").toString().split("\\S\\w+");
+                        String test = document.get("subjects").toString();
+                        String test2 = test.replaceAll("[^\\w\\s]", "");
+                        String test3 = test2.trim();
+                        String[] subjects = test3.split("\\s+");
                         for(String s: subjects) {
                             usersSubjects.add(s);
                         }
@@ -140,12 +144,22 @@ public class FindFriends extends AppCompatActivity {
                     List<DocumentSnapshot> list = results.getDocuments();
 
                     for(DocumentSnapshot d: list) {
-                        Log.i("result", d.getId());
-                        String[] subjects = d.get("subjects").toString().split("\\S\\w+");
+                        Log.i("result", d.get("subjects").toString());
+                        String test = d.get("subjects").toString();
+                        String test2 = test.replaceAll("[^\\w\\s]", "");
+                        String test3 = test2.trim();
+                        String[] subjects = test3.split("\\s+");
 
-                        User u = d.toObject(User.class);
-                        allUsers.add(u);
-                        allUsersSubjects.put(d.getId(), subjects);
+                        if(subjects.length != 0) {
+
+                            Log.i("particular user subjects", Arrays.toString((subjects)));
+
+                            User u = d.toObject(User.class);
+                            u.setId(d.getId());
+                            allUsers.add(u);
+                            allUsersSubjects.put(d.getId(), subjects);
+                            allUsersIdName.put(d.getId(), d.get("name").toString());
+                        }
                     }
                 }
 

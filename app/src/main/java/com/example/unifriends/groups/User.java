@@ -33,6 +33,10 @@ public class User implements Serializable {
         this.uni=uni;
     }
 
+    public void setId(String documentId) {
+        this.id = documentId;
+    }
+
     public List<String> getSubjects() {
         return subjects;
     }

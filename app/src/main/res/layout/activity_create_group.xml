@@ -30,14 +30,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="44dp"
-        android:text="Plan Event"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="28dp"
+        android:onClick="createGroup"
+        android:text="Create Group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friendsbysublist"
+        android:id="@+id/allUsers"
         android:layout_width="371dp"
         android:layout_height="198dp"
         android:layout_marginTop="148dp"
@@ -53,7 +54,28 @@
         android:layout_marginEnd="336dp"
         android:text="By subject"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendsbysublist" />
+        app:layout_constraintTop_toBottomOf="@+id/allUsers" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friendsBySubList"
+        android:layout_width="351dp"
+        android:layout_height="219dp"
+        android:layout_marginTop="96dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/allUsers"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="17dp" />
+
+    <EditText
+        android:id="@+id/groupNameEditText"
+        android:layout_width="129dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Enter Group Name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="108dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

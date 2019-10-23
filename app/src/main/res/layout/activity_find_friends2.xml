@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/friendsbysublist"
+        android:id="@+id/allUsers"
         android:layout_width="396dp"
         android:layout_height="358dp"
 
