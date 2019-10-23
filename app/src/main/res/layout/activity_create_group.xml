@@ -30,8 +30,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="676dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginTop="624dp"
+        android:layout_marginEnd="136dp"
         android:onClick="createGroup"
         android:text="Create Group"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,8 +58,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendsBySubList"
-        android:layout_width="351dp"
-        android:layout_height="219dp"
+        android:layout_width="359dp"
+        android:layout_height="155dp"
         android:layout_marginTop="96dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/allUsers"

@@ -145,7 +145,7 @@ public class FindFriends extends AppCompatActivity {
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                textView = itemView.findViewById(R.id.groupName);
+                textView = itemView.findViewById(R.id.groupNameDisplay);
 
             }
         }
