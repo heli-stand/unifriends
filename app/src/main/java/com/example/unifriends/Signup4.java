@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class signup4 extends AppCompatActivity {
+public class Signup4 extends AppCompatActivity {
     public final String TAG = "Interest Sign Up";
 
     private String[] interet_string = {"Music", "Traveling", "Dancing"," Movies"," Reading"," Writing",
@@ -61,7 +61,7 @@ public class signup4 extends AppCompatActivity {
 
     public void submit(View view){
         Map<String, Object> update = new HashMap<>();
-        update.put("interets", Arrays.asList(interests));
+        update.put("interests", Arrays.asList(interests));
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(FirebaseAuth.getInstance().getUid())

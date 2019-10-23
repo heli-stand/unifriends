@@ -12,9 +12,19 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.unifriends.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.common.primitives.Ints;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,17 +45,49 @@ public class FindFriends extends AppCompatActivity {
         ListView listView = (ListView)findViewById(R.id.listView);
 
         // Build list of friends with mock data
+        /*
         ArrayList<Friend> friends = new ArrayList<>();
 
         for (int i = 0; i < NAMES.length; i++) {
             friends.add(new Friend(NAMES[i], LOCATIONS[i], IMAGES[i],
                     new ArrayList<String>(Arrays.asList("Dota 2", "Golf", "Cars", "Skydiving", "Sleeping"))));
         }
+        */
 
+        // tries to pull data from firebase
+        final ArrayList<Friend> friends = new ArrayList<>();
 
-        CustomAdapter customAdapter = new CustomAdapter(this, friends);
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        final CustomAdapter customAdapter = new CustomAdapter(this, friends);
 
         listView.setAdapter(customAdapter);
+
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Friend currentUser;
+                    QuerySnapshot results = task.getResult();
+                    List<DocumentSnapshot> users = results.getDocuments();
+                    for (DocumentSnapshot user : users) {
+                        String id = user.getId();
+                        String name = user.getString("name");
+                        String location = (String) user.get("location");
+                        // TODO: Get appropriate image from firebase and download it here so it can be displayed
+                        int[] interests = Ints.toArray((List<Integer>) user.get("interests"));
+                        Friend f = new Friend(id, name, location, R.drawable.alexis, interests);
+                        if (f.getId().equals(auth.getCurrentUser().getUid())) {
+                            currentUser = f;
+                        } else {
+                            friends.add(f);
+                        }
+                    }
+                    customAdapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
@@ -65,6 +107,7 @@ public class FindFriends extends AppCompatActivity {
 
     }
 
+
     public double[] longLatSplitter(String location) {
         double[] arr = new double[2];
         String loc = "-37.798332, 144.958660";
@@ -79,9 +122,7 @@ public class FindFriends extends AppCompatActivity {
     public void gotoProfile(Friend f) {
         Log.i("User selected: ", f.toString());
         Intent intent = new Intent(this, FriendProfile.class);
-        intent.putExtra("name", f.getName());
-        intent.putExtra("img", f.getImg());
-        intent.putExtra("interests", (ArrayList<String>) f.getInterests());
+        intent.putExtra("id", f.getId());
         startActivity(intent);
     }
 
@@ -139,9 +180,10 @@ public class FindFriends extends AppCompatActivity {
         // TODO: Implement uploading and storing of images on Firebase first for something more sensible
         private int img;
 
-        private List<String> interests;
+        private int[] interests;
 
-        public Friend(String name, String loc, int img, List<String> interests) {
+        public Friend(String id, String name, String loc, int img, int[] interests) {
+            this.id = id;
             this.name = name;
             this.location = loc;
             this.img = img;
@@ -164,7 +206,7 @@ public class FindFriends extends AppCompatActivity {
             return img;
         }
 
-        public List<String> getInterests() {
+        public int[] getInterests() {
             return interests;
         }
     }

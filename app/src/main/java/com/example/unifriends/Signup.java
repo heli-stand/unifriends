@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -74,6 +75,16 @@ public class Signup extends AppCompatActivity{
 
         findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Invalid Email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 8) {
+            Toast.makeText(this, "Password is too short!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -99,7 +110,10 @@ public class Signup extends AppCompatActivity{
                         // ...
                     }
                 });
+    }
 
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     private void uploadUserInfo(String id, String email, String password){
