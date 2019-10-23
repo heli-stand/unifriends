@@ -50,39 +50,9 @@ public class createGroup extends AppCompatActivity {
         userID = getIntent().getStringExtra("userID");
 
 
-
         findMatches();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentReference docRef = db.collection("users").document(userID);
 
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.i("data", "DocumentSnapshot data: " + document.getData());
-                        Log.i("subjects", document.get("subjects").toString());
-                        String[] subjects = document.get("subjects").toString().split("[^a-zA-Z0-9\\s]+");
-
-                        for(String s: subjects) {
-                            usersSubjects.add(s);
-                            Log.i("subjects in array", s);
-                        }
-
-                    } else {
-                        Log.i("error", "No such document");
-
-
-                    }
-                } else {
-                    Log.i("error", "get failed with ", task.getException());
-
-
-                }
-            }
-        });
 
         //get all users
 
@@ -93,7 +63,12 @@ public class createGroup extends AppCompatActivity {
         for(User user: allUsers) {
             Log.i("all users in create group", user.email);
         }
-        
+
+        for(String user: usersSubjects) {
+            Log.i("all subjects in user group", user);
+        }
+
+
         RecyclerView recyclerView = findViewById(R.id.friendsbysublist);
 
 
@@ -103,7 +78,6 @@ public class createGroup extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdapter);
-
 
 
 
@@ -130,6 +104,7 @@ public class createGroup extends AppCompatActivity {
             User user = users.get(position);
 
             holder.textView.setText(user.name);
+            holder.checkBox.setId(position);
         }
 
         @Override
@@ -140,18 +115,20 @@ public class createGroup extends AppCompatActivity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             TextView textView;
+            CheckBox checkBox;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
                 textView = itemView.findViewById(R.id.nameText);
+                checkBox = itemView.findViewById(R.id.selectorCheckBox);
             }
         }
     }
 
 
     public void checkboxClicked(View view) {
-        User u = (User) ((CheckBox) view).getTag();
-        Log.i("checked", u.name);
+        CheckBox c = ((CheckBox) view);
+        Log.i("checked", Integer.toString(c.getId()));
 
     }
 
@@ -185,7 +162,7 @@ public class createGroup extends AppCompatActivity {
         Log.i("etnered", "etnered");
 
         for(String s: usersSubjects) {
-            Log.i("users subs", s);
+            Log.i("users subs in creategroup", s);
         }
 
 
@@ -211,7 +188,7 @@ public class createGroup extends AppCompatActivity {
 
 
         for(String match: matches) {
-            Log.i("matches", match);
+            Log.i("final match", match);
         }
 
 

@@ -32,4 +32,8 @@ public class User implements Serializable {
         this.subjects=subjects;
         this.uni=uni;
     }
+
+    public List<String> getSubjects() {
+        return subjects;
+    }
 }
