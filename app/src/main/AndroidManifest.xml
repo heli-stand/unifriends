@@ -15,7 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".groups.createGroup"></activity>
+
+        <activity android:name=".signup4"></activity>
+
         <activity
             android:name=".Profile"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -82,6 +86,10 @@
         <activity
             android:name=".chat.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".events.Calendar"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

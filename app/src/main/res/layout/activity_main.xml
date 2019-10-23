@@ -162,9 +162,9 @@
                                 android:drawablePadding="10dp"
                                 android:gravity="center"
                                 android:maxLines="1"
-                                android:onClick="goToProfile"
+                                android:onClick="goToEvent"
                                 android:singleLine="true"
-                                android:text="My Profile"
+                                android:text="My Events"
                                 android:textColor="#27384c"
                                 android:textSize="13.5sp" />
 
