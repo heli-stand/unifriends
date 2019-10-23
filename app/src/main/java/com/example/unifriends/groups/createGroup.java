@@ -17,8 +17,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.unifriends.MainActivity;
+import com.example.unifriends.friendFinder.FindFriends;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -231,22 +233,24 @@ public class createGroup extends AppCompatActivity {
 
         //add current user to group
 
-        selectedUsers.add(userID);
+       if(selectedUsers.size() == 0 || groupName.equalsIgnoreCase("")) {
+           Toast.makeText(getApplicationContext(),"Please enter a group name or select users to add to group",Toast.LENGTH_LONG).show();
+       } else {
+           selectedUsers.add(userID);
 
 
-        data.put("name",groupName );
-        data.put("members", selectedUsers);
-        data.put("events",null);
+           data.put("name",groupName );
+           data.put("members", selectedUsers);
+           data.put("events",null);
 
-        newGroupRef.set(data);
+           newGroupRef.set(data);
 
-        Log.i("new doc id", newGroupRef.getId());
+           Log.i("new doc id", newGroupRef.getId());
 
-        for(String id: selectedUsers) {
-            addNewGroupToUser(id, newGroupRef.getId());
-        }
-
-
+           for(String id: selectedUsers) {
+               addNewGroupToUser(id, newGroupRef.getId());
+           }
+       }
 
     }
 
@@ -288,6 +292,8 @@ public class createGroup extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i("success", "DocumentSnapshot successfully updated!");
+                        Toast.makeText(getApplicationContext(),"Group Successfully Created!",Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(createGroup.this, FindFriends.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
