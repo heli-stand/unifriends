@@ -51,7 +51,7 @@ dependencies {
 
     implementation 'com.microsoft.projectoxford:face:1.4.3'
     //implementation 'com.android.support:design:29.0.0'
-    implementation 'com.google.api-client:google-api-client:1.25.0'
+
 
 
     testImplementation 'junit:junit:4.12'

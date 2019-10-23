@@ -57,11 +57,12 @@ public class createGroup extends AppCompatActivity {
 
 
 
-    public static ArrayList<String> selectedAllUsers = new ArrayList<>();
-    public static ArrayList<String> selectedUserBySub = new ArrayList<>();
+    public static List<String> selectedUsers = new ArrayList<>();
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    public static ArrayList<User> matchesUser = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class createGroup extends AppCompatActivity {
 
 
         MyAdapter myAdapter = new MyAdapter(this, allUsers);
-        MatchAdapter matchAdapter = new MatchAdapter(this, matches);
+        MatchAdapter matchAdapter = new MatchAdapter(this, matchesUser);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdapter);
@@ -151,9 +152,9 @@ public class createGroup extends AppCompatActivity {
 
     public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MyViewHolder> {
         Context context;
-        ArrayList<String> matches;
+        ArrayList<User> matches;
 
-        public MatchAdapter(Context context, ArrayList<String> matches) {
+        public MatchAdapter(Context context, ArrayList<User> matches) {
             this.context = context;
             this.matches = matches;
         }
@@ -167,10 +168,9 @@ public class createGroup extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull MatchAdapter.MyViewHolder holder, int position) {
+            User u = matches.get(position);
 
-
-
-            holder.textView.setText(allUsersIdName.get(matches.get(position)));
+            holder.textView.setText(u.name);
             holder.checkBox.setId(position);
         }
 
@@ -195,24 +195,24 @@ public class createGroup extends AppCompatActivity {
 
     public void checkboxClickedAllUsers(View view) {
         CheckBox c = ((CheckBox) view);
-        Log.i("checked", Integer.toString(c.getId()) + allUsers.get(c.getId()).email );
+        Log.i("checked", Integer.toString(c.getId()) + allUsers.get(c.getId()).id );
 
-        if(!selectedAllUsers.contains(allUsers.get(c.getId()).email)) {
-            selectedAllUsers.add(allUsers.get(c.getId()).email);
+        if(!selectedUsers.contains(allUsers.get(c.getId()).id)) {
+            selectedUsers.add(allUsers.get(c.getId()).id);
         } else {
-            selectedAllUsers.remove(allUsers.get(c.getId()).email);
+            selectedUsers.remove(allUsers.get(c.getId()).id);
         }
 
     }
 
     public void checkboxClickedBySubject(View view) {
         CheckBox c = ((CheckBox) view);
-        Log.i("checked", Integer.toString(c.getId()) + matches.get(c.getId()));
+        Log.i("checked", Integer.toString(c.getId()) + matchesUser.get(c.getId()).id);
 
-        if(!selectedUserBySub.contains(matches.get(c.getId()))) {
-            selectedUserBySub.add(matches.get(c.getId()));
+        if(!selectedUsers.contains(matchesUser.get(c.getId()).id)) {
+            selectedUsers.add(matchesUser.get(c.getId()).id);
         } else {
-            selectedUserBySub.remove(matches.get(c.getId()));
+            selectedUsers.remove(matchesUser.get(c.getId()).id);
         }
 
     }
@@ -220,59 +220,110 @@ public class createGroup extends AppCompatActivity {
 
 
 
-//    public void createGroup(View view) {
-//        Log.i("click", "this has been clicked");
-//
-//        for(String s: selectedUserBySub) {
-//            Log.i("selected users by sub", s);
-//        }
-//
-//        for(String s: selectedAllUsers) {
-//            Log.i("selected all users", s);
-//
-//        }
-//
-//        EditText groupNameEditText = findViewById(R.id.groupNameEditText);
-//
-//
-//        Map<String, Object> update = new HashMap<>();
-//        update.put("name", groupNameEditText.getText());
-//
-//
-//        update.put("major", major);
-//        update.put("name", name);
-//        update.put("uni", uni);
-//        update.put("photo", "usersImage/" + FirebaseAuth.getInstance().getUid() + ".jpg");
-//        update.put("facialID", getIntent().getStringExtra("facialID"));
-//
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//
-//        db.collection("users").document(id)
-//                .update(update)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Log.d(TAG, "DocumentSnapshot successfully written!");
-//                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-//
-//                        startActivity(intent);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-//
-//                        Log.w(TAG, "Error writing document", e);
-//                    }
-//                });
-//
-//
-//
-//    }
+    public void createGroup(View view) {
+        Log.i("click", "this has been clicked");
+
+        EditText editGroupName = findViewById(R.id.groupNameEditText);
+        String groupName = editGroupName.getText().toString();
+
+        DocumentReference newGroupRef = db.collection("group").document();
+        Map<String, Object> data = new HashMap<>();
+
+        //add current user to group
+
+        selectedUsers.add(userID);
+
+
+        data.put("name",groupName );
+        data.put("members", selectedUsers);
+        data.put("events",null);
+
+        newGroupRef.set(data);
+
+        Log.i("new doc id", newGroupRef.getId());
+
+        for(String id: selectedUsers) {
+            addNewGroupToUser(id, newGroupRef.getId());
+        }
+
+
+
+    }
+
+    public void addNewGroupToUser(String userId, String groupRef) {
+        //get users current groups
+        final List<String> currentEvents = new ArrayList<String>();
+
+        final DocumentReference docRef = db.collection("users").document(userId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.i("users current groups", document.get("groups").toString());
+                        String test = document.get("groups").toString();
+                        String test2 = test.replaceAll("[^\\w\\s]", "");
+                        String test3 = test2.trim();
+                        String[] groups = test3.split("\\s+");
+
+                        for(String s: groups) {
+                            currentEvents.add(s);
+                        }
+                    }
+                }
+            }
+        });
+
+
+        //add group
+        DocumentReference userRef = db.collection("users").document(userId);
+
+
+        currentEvents.add(groupRef);
+
+        userRef
+                .update("groups", currentEvents)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("success", "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("fail", "Error updating document", e);
+                    }
+                });
+
+
+    }
+
+    public void addGroupToExisting(String groupRef, String userId, List<String> currentEvents) {
+        //add group
+        DocumentReference userRef = db.collection("users").document(userId);
+
+
+        currentEvents.add(groupRef);
+
+        userRef
+                .update("groups", currentEvents)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("success", "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("fail", "Error updating document", e);
+                    }
+                });
+    }
+
+
 
     public void getAllUsers() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -308,15 +359,20 @@ public class createGroup extends AppCompatActivity {
         }
 
 
-        for (String key : allUsersSubjects.keySet()) {
-            String[] subjects = allUsersSubjects.get(key);
-            for (String subject : subjects) {
-                for (String userSub : usersSubjects) {
-                    if (userSub.equalsIgnoreCase(subject) && !key.equalsIgnoreCase(userID) && !userSub.equalsIgnoreCase(" ")) {
-                        matches.add(key);
+
+        for(User u: allUsers) {
+            List<String> subjects = u.getSubjects();
+            for(String s: subjects) {
+                for(String userSub: usersSubjects) {
+                    if(userSub.equalsIgnoreCase(s) && !u.id.equalsIgnoreCase(userID)) {
+                        matchesUser.add(u);
                     }
                 }
             }
+        }
+
+        for(User u: matchesUser) {
+           Log.i("MATCHED USER", u.id);
         }
 
 

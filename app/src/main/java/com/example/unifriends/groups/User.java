@@ -15,12 +15,13 @@ public class User implements Serializable {
     public String photo;
     public List<String> subjects;
     public String uni;
+    public List<String> groups;
 
     public User() {
 
     }
 
-    public User(String degree, String email, String facialID, List<Long> interets, String major, String name, String password, String photo, List<String> subjects, String uni) {
+    public User(String degree, String email, String facialID, List<Long> interets, String major, String name, String password, String photo, List<String> subjects, String uni, List<String> groups) {
         this.degree= degree;
         this.email= email;
         this.facialID=facialID;
@@ -31,6 +32,7 @@ public class User implements Serializable {
         this.photo=photo;
         this.subjects=subjects;
         this.uni=uni;
+        this.groups=groups;
     }
 
     public void setId(String documentId) {

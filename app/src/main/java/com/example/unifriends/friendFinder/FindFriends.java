@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.unifriends.R;
 import com.example.unifriends.groups.User;
@@ -42,6 +45,8 @@ public class FindFriends extends AppCompatActivity {
     String[] NAMES = {"Alexis Mitchell", "Bec Cartright", "Chloe Diamond", "Greg Johnson", "Mike Stewart", "Sam Smith", "Steve Hawkins"};
     int[] IMAGES = {R.drawable.alexis, R.drawable.bec, R.drawable.chloe, R.drawable.greg, R.drawable.mike, R.drawable.sam, R.drawable.steve};
     String[] LOCATIONS = {"-37.798332, 144.958660", "-37.797782, 144.959302","-37.798344, 144.961287", "-37.799477, 144.958903", "-37.799570, 144.961666", "-37.797946, 144.962282", "-37.797056, 144.963586" };
+    public static ArrayList<String> usersGroups = new ArrayList<>();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,7 @@ public class FindFriends extends AppCompatActivity {
 
         getAllUsers();
         getUsersSubjects();
+
 
 
         super.onCreate(savedInstanceState);
@@ -86,6 +92,63 @@ public class FindFriends extends AppCompatActivity {
                                         }
         );
 
+
+        for(String s: usersGroups) {
+            Log.i("hree are the groups in findfrines", s);
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.usersGroupsList);
+        MyAdapter myAdapter = new MyAdapter(this, usersGroups);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(myAdapter);
+
+
+
+    }
+
+
+
+
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+        Context context;
+        ArrayList<String> usersGroups;
+
+        public MyAdapter(Context context, ArrayList<String> usersGroups) {
+            this.context = context;
+            this.usersGroups = usersGroups;
+        }
+
+        @NonNull
+        @Override
+        public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+            View view = LayoutInflater.from(context).inflate(R.layout.viewusersgroupslayout, viewGroup, false);
+            return new MyViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
+
+
+            holder.textView.setText(usersGroups.get(position));
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return usersGroups.size();
+        }
+
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            TextView textView;
+
+
+            public MyViewHolder(View itemView) {
+                super(itemView);
+                textView = itemView.findViewById(R.id.groupName);
+
+            }
+        }
     }
 
     public double[] longLatSplitter(String location) {
