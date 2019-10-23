@@ -228,7 +228,7 @@
             android:id="@+id/button_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edit_text_password"
+            android:layout_below="@+id/time"
             android:background="#ffffff"
             android:enabled="false"
             android:text="Add Event" />
