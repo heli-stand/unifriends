@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.unifriends.R;
+import com.example.unifriends.groups.User;
 import com.example.unifriends.groups.createGroup;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.unifriends.groups.createGroup.allUsers;
 import static com.example.unifriends.groups.createGroup.allUsersSubjects;
 import static com.example.unifriends.groups.createGroup.usersSubjects;
 
@@ -51,7 +53,7 @@ public class FindFriends extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends2);
 
-        ListView listView = (ListView)findViewById(R.id.listView);
+        ListView listView = (ListView)findViewById(R.id.friendsbysublist);
 
         // Build list of friends with mock data
         ArrayList<Friend> friends = new ArrayList<>();
@@ -65,6 +67,7 @@ public class FindFriends extends AppCompatActivity {
         CustomAdapter customAdapter = new CustomAdapter(this, friends);
 
         listView.setAdapter(customAdapter);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
@@ -139,6 +142,9 @@ public class FindFriends extends AppCompatActivity {
                     for(DocumentSnapshot d: list) {
                         Log.i("result", d.getId());
                         String[] subjects = d.get("subjects").toString().split("\\S\\w+");
+
+                        User u = d.toObject(User.class);
+                        allUsers.add(u);
                         allUsersSubjects.put(d.getId(), subjects);
                     }
                 }
