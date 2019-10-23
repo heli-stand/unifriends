@@ -65,6 +65,7 @@ public class Calendar extends AppCompatActivity {
 
 
 
+
         com.example.unifriends.events.HomeCollection.date_collection_arr=new ArrayList<com.example.unifriends.events.HomeCollection>();
 //        HomeCollection.date_collection_arr.add( new HomeCollection("2019-10-10" ,"Study session","Study_session","this is a study sesh","11:00am"));
 //        HomeCollection.date_collection_arr.add( new HomeCollection("2019-10-10" ,"Team meeting","Team meeting","this is team meeting","12:00pm"));

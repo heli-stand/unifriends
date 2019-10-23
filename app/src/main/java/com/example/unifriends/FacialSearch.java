@@ -247,6 +247,10 @@ public class FacialSearch extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 //                            String uuidProfile = document.get("facialID").toString();
 //                            final UUID uuidProfile = UUID.fromString(getIntent().getStringExtra("facialID"));
+
+                            if (document.get("facialID") == null){
+                                continue;
+                            }
                             if (verify( document.get("facialID").toString(), faceId)){
                                 Log.d(TAG, "Found, userId: " + document.getId() );
                                 Intent intent = new Intent(FacialSearch.this, Profile.class);
