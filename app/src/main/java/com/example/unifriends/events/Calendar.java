@@ -209,26 +209,21 @@ public class Calendar extends AppCompatActivity {
     };
 
     private void getEvents(String groupId){
-        DocumentReference docRef = db.collection("group").document(groupId);
 
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        Log.e(TAG, "DocumentSnapshot data: " + groupId);
+        db.collection("group").document(groupId).collection("events")
+         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-
-                        if (document.get("events") == null){
-                            Log.d(TAG, "Events data: " + null);
-                        }else{
-                            List<String[]> eventsList = (List<String[]>)document.get("events");
-                            eventsList.toArray(events);
-                            Log.d(TAG, "DocumentSnapshot data: " + events.toString());
-
-                        }
-                    } else {
-                        Log.d(TAG, "No such document");
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        com.example.unifriends.events.HomeCollection
+                                .date_collection_arr
+                                .add(new com.example.unifriends.events.HomeCollection(document.get("date").toString(), document.get("name").toString(), document.get("subject").toString(),
+                                        document.get("location").toString(), document.get("time").toString()));
+                        Log.d(TAG, document.getId() + " => " + document.getData());
                     }
+                    refreshCalendar();
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
@@ -255,6 +250,6 @@ public class Calendar extends AppCompatActivity {
         String[] newEvent = {newDate, newName, newSubject, newDescription, newTime};
         temp.add(newEvent);
         update.put("interets", Arrays.asList(temp));
-        db.collection("group").document(groupId).update()
+//        db.collection("group").document(groupId).update().
     }
 }

@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot data: " + groups.get(0));
 
                         Intent intent = new Intent(MainActivity.this, Calendar.class);
-                        intent.putExtra("gourpId", groups.get(0));
+                        intent.putExtra("groupId", groups.get(0));
                         startActivity(intent);
                     } else {
                         Log.d(TAG, "No such document");
