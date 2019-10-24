@@ -44,7 +44,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main";
@@ -97,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
         getUserLocation();
     }
 
@@ -110,7 +112,34 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i("Location", location.toString());
 
+                String loclat = Double.toString(location.getLatitude());
+                String loclong = Double.toString(location.getLongitude());
+
+                List<String> locArray = new ArrayList<>();
+
+                locArray.add(loclat);
+                locArray.add(loclong);
+
+                Map<String, Object> update = new HashMap<>();
+                update.put("location", locArray);
+
                 // ADD SEND LOCATION HERE
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                db.collection("users").document(user.getUid())
+                        .update(update)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                            }
+                        });
             }
 
             @Override
@@ -144,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
         if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             //have permission
             if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                //get initial location and then every 50m
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 50, locationListener);
             }
         }
     }
