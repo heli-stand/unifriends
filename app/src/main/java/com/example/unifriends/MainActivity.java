@@ -118,16 +118,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i("Location", location.toString());
 
-                String loclat = Double.toString(location.getLatitude());
-                String loclong = Double.toString(location.getLongitude());
-
-                List<String> locArray = new ArrayList<>();
-
-                locArray.add(loclat);
-                locArray.add(loclong);
-
+//
                 Map<String, Object> update = new HashMap<>();
-                update.put("location", locArray);
+                update.put("location", location);
 
                 // ADD SEND LOCATION HERE
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -167,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //if we dont have permission, ask for it
 
-    }
+        }
 
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
