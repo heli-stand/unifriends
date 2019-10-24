@@ -49,8 +49,8 @@ public class FriendProfile extends AppCompatActivity {
                 image.setImageResource(R.drawable.alexis);
                 int[] intsArray = Ints.toArray((List<Integer>) user.get("interests"));
                 ArrayList<String> ints = new ArrayList<>();
-                for (int i : intsArray) {
-                    if (i==1) {
+                for (int i = 0; i < intsArray.length; i++) {
+                    if (intsArray[i] == 1) {
                         ints.add(intsStrings[i]);
                     }
                 }

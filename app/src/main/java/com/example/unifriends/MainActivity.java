@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.unifriends.events.Calendar;
+import com.example.unifriends.friendFinder.FindFriends;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -126,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToFindFriends(View view) {
+        Intent intent = new Intent(MainActivity.this, FindFriends.class);
+        startActivity(intent);
+    }
 
     public void goToProfile(View view){
         Intent intent = new Intent(MainActivity.this, Profile.class);

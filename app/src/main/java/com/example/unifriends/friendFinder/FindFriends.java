@@ -22,16 +22,19 @@ import com.google.common.primitives.Ints;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FindFriends extends AppCompatActivity {
-
+    private static final String TAG = "FindFriends";
 
     String[] NAMES = {"Alexis Mitchell", "Bec Cartright", "Chloe Diamond", "Greg Johnson", "Mike Stewart", "Sam Smith", "Steve Hawkins"};
     int[] IMAGES = {R.drawable.alexis, R.drawable.bec, R.drawable.chloe, R.drawable.greg, R.drawable.mike, R.drawable.sam, R.drawable.steve};
@@ -40,9 +43,10 @@ public class FindFriends extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "Entry.");
         setContentView(R.layout.activity_find_friends2);
 
-        ListView listView = (ListView)findViewById(R.id.listView);
+        final ListView listView = (ListView)findViewById(R.id.listView);
 
         // Build list of friends with mock data
         /*
@@ -60,50 +64,69 @@ public class FindFriends extends AppCompatActivity {
         final FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        Log.d(TAG, "Setting CustomAdapter");
         final CustomAdapter customAdapter = new CustomAdapter(this, friends);
-
         listView.setAdapter(customAdapter);
 
+        Log.d(TAG, "Setting Listener to get Info");
         db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Friend currentUser;
+                    Friend currentUser = null;
                     QuerySnapshot results = task.getResult();
                     List<DocumentSnapshot> users = results.getDocuments();
+                    Log.d(TAG, "Got documents, processing them");
                     for (DocumentSnapshot user : users) {
-                        String id = user.getId();
-                        String name = user.getString("name");
-                        String location = (String) user.get("location");
-                        // TODO: Get appropriate image from firebase and download it here so it can be displayed
-                        int[] interests = Ints.toArray((List<Integer>) user.get("interests"));
-                        Friend f = new Friend(id, name, location, R.drawable.alexis, interests);
-                        if (f.getId().equals(auth.getCurrentUser().getUid())) {
-                            currentUser = f;
-                        } else {
-                            friends.add(f);
+                        if (user.get("name") != null && user.get("location") != null && user.get("interests") != null) {
+                            String id = user.getId();
+                            String name = user.getString("name");
+                            GeoPoint location = (GeoPoint) user.get("location");
+                            // TODO: Get appropriate image from firebase and download it here so it can be displayed
+                            int[] interests = Ints.toArray((List<Integer>) user.get("interests"));
+                            Friend f = new Friend(id, name, location, R.drawable.alexis, interests);
+                            if (f.getId().equals(auth.getCurrentUser().getUid())) {
+                                currentUser = f;
+                            } else {
+                                friends.add(f);
+                            }
                         }
                     }
-                    customAdapter.notifyDataSetChanged();
-                }
-            }
-        });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                //position tells you which item was clicked
+                    if (currentUser != null) {
+                        for (Friend f : friends) {
+                            f.setOverlap(calcInterest(currentUser.getInterests(), f.getInterests()));
+                        }
+
+                        Collections.sort(friends, new Comparator<Friend>() {
+                            @Override
+                            public int compare(Friend friend, Friend t1) {
+                                return friend.getOverlap().compareTo(t1.getOverlap());
+                            }
+                        });
+                        Collections.reverse(friends);
+                    }
+                    Log.d(TAG, friends.toString());
+                    Log.d(TAG, "Notifying adapter data has changed");
+                    customAdapter.notifyDataSetChanged();
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                        @Override
+                                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                            //position tells you which item was clicked
                                                 /*
                                                 Log.i("Person Tapped", NAMES[position]);
                                                 double[] selectedUserLocation = longLatSplitter(LOCATIONS[position]);
                                                 String selectedUserName = NAMES[position];
                                                 viewMap(selectedUserLocation, selectedUserName);
                                                 */
-
-                                                gotoProfile( ((Friend) parent.getItemAtPosition(position)) );
-                                            }
-                                        }
-        );
+                                                            Log.d(TAG, "Setting Item Click Listeners");
+                                                            gotoProfile( ((Friend) parent.getItemAtPosition(position)) );
+                                                        }
+                                                    }
+                    );
+                }
+            }
+        });
 
     }
 
@@ -173,21 +196,41 @@ public class FindFriends extends AppCompatActivity {
         }
     }
 
+    public int calcInterest(int[] user, int[] friend) {
+        int i, overlap = 0;
+        for (i = 0; i < user.length; i++) {
+            if (user[i] == 1 && friend[i] == 1) {
+                overlap += 1;
+            }
+        }
+
+        return overlap;
+    }
+
     class Friend {
         private String id;
         private String name;
-        private String location;
+        private GeoPoint location;
         // TODO: Implement uploading and storing of images on Firebase first for something more sensible
         private int img;
+        private Integer overlap;
 
         private int[] interests;
 
-        public Friend(String id, String name, String loc, int img, int[] interests) {
+        public Friend(String id, String name, GeoPoint loc, int img, int[] interests) {
             this.id = id;
             this.name = name;
             this.location = loc;
             this.img = img;
             this.interests = interests;
+        }
+
+        public Integer getOverlap() {
+            return overlap;
+        }
+
+        public void setOverlap(int overlap) {
+            this.overlap = overlap;
         }
 
         public String getId(){
@@ -198,7 +241,7 @@ public class FindFriends extends AppCompatActivity {
             return name;
         }
 
-        public String getLocation() {
+        public GeoPoint getLocation() {
             return location;
         }
 
