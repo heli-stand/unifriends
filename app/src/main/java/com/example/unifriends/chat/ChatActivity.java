@@ -33,11 +33,19 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseListAdapter<ChatMessage> adapter;
     SharedPreferences sp;
 
+    private String roomId = "";
+    private String roomName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            roomId = extras.getString("roomId");
+            roomName = extras.getString("roomName");
+        }
         sp = getSharedPreferences("login", MODE_PRIVATE);
         displayChatMessages();
     }
@@ -50,7 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         // Read the input field and push a new instance
         // of ChatMessage to the Firebase database
         FirebaseDatabase.getInstance()
-                .getReference().child("messages")
+                .getReference().child("messages").child(roomId)
                 .push()
                 .setValue(new ChatMessage(input.getText().toString(),
                        sp.getString("name", ""))
@@ -65,7 +73,8 @@ public class ChatActivity extends AppCompatActivity {
     private void displayChatMessages() {
         findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         ListView listOfMessages = findViewById(R.id.list_of_messages);
-        Query query = FirebaseDatabase.getInstance().getReference().child("messages");
+        Query query = FirebaseDatabase.getInstance().getReference()
+                .child("messages").child(roomId);
         // Get references to the views of message.xml
         // Set their text
         // Format the date before showing it
@@ -90,10 +99,10 @@ public class ChatActivity extends AppCompatActivity {
                 // Format the date before showing it
                 messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
                         model.getMessageTime()));
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
             }
         };
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
         listOfMessages.setAdapter(adapter);
 
@@ -128,8 +137,7 @@ public class ChatActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         super.onBackPressed();
-        startActivity(new Intent(ChatActivity.this, MainActivity.class));
-
+        startActivity(new Intent(ChatActivity.this, ChatRoomActivity.class));
     }
 
 }

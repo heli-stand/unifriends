@@ -210,7 +210,7 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/subject"
+            android:layout_below="@+id/name"
             android:background="#ffffff"
             android:hint="Event Location"
             android:inputType="text" />
