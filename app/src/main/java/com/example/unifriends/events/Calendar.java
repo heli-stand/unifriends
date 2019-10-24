@@ -196,7 +196,7 @@ public class Calendar extends AppCompatActivity {
     }
 
     private void createEvent(String groupId, String newDate, String newName, String newSubject, String newDescription, String newTime){
-        db.collection("group").document(groupId).
+        db.collection("group").document(groupId);
     }
 
     protected void setNextMonth() {
