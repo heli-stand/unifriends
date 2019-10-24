@@ -162,7 +162,7 @@
                                 android:layout_marginTop="15dp"
                                 android:layout_marginBottom="15dp"
                                 android:clickable="true"
-                                android:drawableTop="@drawable/ic_person"
+                                android:drawableTop="@drawable/ic_event_available"
                                 android:drawablePadding="10dp"
                                 android:gravity="center"
                                 android:maxLines="1"

@@ -19,7 +19,7 @@ public class ChatRoomRepository {
 
     public void getRooms(EventListener<QuerySnapshot> listener) {
         db.collection("group")
-                //.whereArrayContains("members", uid)
+                .whereArrayContains("members", uid)
                 .addSnapshotListener(listener);
     }
 }
