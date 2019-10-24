@@ -26,7 +26,7 @@ import java.util.Map;
  * Email: lhe3@student.unimelb.edu.au
  * Class signup4 collects users' interest and later for search friends with similar interests
  */
-public class signup4 extends AppCompatActivity {
+public class Signup4 extends AppCompatActivity {
     public final String TAG = "Interest Sign Up";
     /* a list of 20 interest*/
     private String[] interest_string = {"Music", "Traveling", "Dancing"," Movies"," Reading"," Writing",

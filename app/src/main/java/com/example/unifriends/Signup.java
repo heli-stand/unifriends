@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,6 +77,16 @@ public class Signup extends AppCompatActivity{
 
         findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Invalid Email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 8) {
+            Toast.makeText(this, "Password is too short!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -100,7 +112,10 @@ public class Signup extends AppCompatActivity{
                         // ...
                     }
                 });
+    }
 
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     /**
@@ -115,6 +130,7 @@ public class Signup extends AppCompatActivity{
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("password", password);
+        user.put("location", new GeoPoint(-37.7983, 144.9610));
 
         db.collection("users").document(id)
                 .set(user)

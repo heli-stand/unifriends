@@ -90,7 +90,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
             tools:text="Dota 2, Golf, Cars, Skydiving, Sleeping" />

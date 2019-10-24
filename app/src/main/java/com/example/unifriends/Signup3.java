@@ -94,7 +94,7 @@ public class Signup3 extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        Intent intent = new Intent(getApplicationContext(), signup4.class);
+                        Intent intent = new Intent(getApplicationContext(), Signup4.class);
                         // to the next step
                         startActivity(intent);
                     }

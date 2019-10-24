@@ -5,6 +5,18 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.View;
+
+import com.example.unifriends.events.Calendar;
+import com.example.unifriends.friendFinder.FindFriends;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -117,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, FacialSearch.class);
         startActivity(intent);
     }
-
 
     public void goToProfile(View view){
         Intent intent = new Intent(MainActivity.this, Profile.class);
