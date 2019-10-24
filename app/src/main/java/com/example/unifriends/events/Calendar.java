@@ -3,6 +3,7 @@ package com.example.unifriends.events;
 
 import android.os.Bundle;
 import android.util.EventLogTags;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,20 +13,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.unifriends.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class Calendar extends AppCompatActivity {
 
-
+    public final String TAG = "Calendar";
 
     private EditText editDate;
     private EditText editName;
@@ -34,7 +46,7 @@ public class Calendar extends AppCompatActivity {
     private EditText editTime;
     private Button buttonConfirm;
 
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public GregorianCalendar cal_month, cal_month_copy;
     private com.example.unifriends.events.HwAdapter hwAdapter;
@@ -69,7 +81,7 @@ public class Calendar extends AppCompatActivity {
         com.example.unifriends.events.HomeCollection.date_collection_arr=new ArrayList<com.example.unifriends.events.HomeCollection>();
 //        HomeCollection.date_collection_arr.add( new HomeCollection("2019-10-10" ,"Study session","Study_session","this is a study sesh","11:00am"));
 //        HomeCollection.date_collection_arr.add( new HomeCollection("2019-10-10" ,"Team meeting","Team meeting","this is team meeting","12:00pm"));
-        com.example.unifriends.events.HomeCollection.date_collection_arr.add( new com.example.unifriends.events.HomeCollection("2019-09-15" ,"another one","meeting","this is a meeting","2:00pm"));
+        com.example.unifriends.events.HomeCollection.date_collection_arr.add( new com.example.unifriends.events.HomeCollection("2019-10-15" ,"Event 1","comp90018","ERC","2:00pm"));
 
 
 
@@ -104,16 +116,53 @@ public class Calendar extends AppCompatActivity {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newDate = editDate.getText().toString();
-                String newName = editName.getText().toString();
-                String newSubject = editSubject.getText().toString();
-                String newDescription = editDescription.getText().toString();
-                String newTime = editTime.getText().toString();
+                final String newDate = editDate.getText().toString();
+                final String newName = editName.getText().toString();
+                final String newSubject = editSubject.getText().toString();
+                final String newDescription = editDescription.getText().toString();
+                final String newTime = editTime.getText().toString();
 
                 com.example.unifriends.events.HomeCollection.date_collection_arr.add( new com.example.unifriends.events.HomeCollection(newDate, newName, newSubject,
                         newDescription, newTime));
 
                 refreshCalendar();
+                Log.d("Calendar", newDate);
+
+
+                DocumentReference docRef = db.collection("users").document(FirebaseAuth.getInstance().getUid());
+
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.get("groups").toString());
+//                                setText(document.get("name").toString(), document.get("uni").toString(),
+//                                        document.get("major").toString(), document.get("degree").toString()
+//                                        , document.get("email").toString());
+//                                setFacialID(document.get("facialID").toString());
+//                                setPhoto(document.get("photo").toString());
+
+//                                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                                List<String> groups = (List<String>)document.get("groups");
+
+                                Log.d(TAG, "DocumentSnapshot data: " + groups.get(0));
+                                createEvent(groups.get(0), newDate, newName, newSubject, newDescription, newTime);
+
+                            } else {
+                                Log.d(TAG, "No such document");
+//                                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+                        }
+                    }
+                });
+
             }
         });
 
@@ -145,6 +194,11 @@ public class Calendar extends AppCompatActivity {
 
         });
     }
+
+    private void createEvent(String groupId, String newDate, String newName, String newSubject, String newDescription, String newTime){
+        db.collection("group").document(groupId).
+    }
+
     protected void setNextMonth() {
         if (cal_month.get(GregorianCalendar.MONTH) == cal_month.getActualMaximum(GregorianCalendar.MONTH)) {
             cal_month.set((cal_month.get(GregorianCalendar.YEAR) + 1), cal_month.getActualMinimum(GregorianCalendar.MONTH), 1);
