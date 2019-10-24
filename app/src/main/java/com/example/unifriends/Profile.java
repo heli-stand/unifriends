@@ -27,8 +27,12 @@ import com.google.firebase.storage.StorageReference;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  Author: Li He
+ *  Email: lhe3@student.unimelb.edu.au
+ *  Class Profile displays the user's information registered when sign up
+ */
 public class Profile extends AppCompatActivity {
-    private String userID;
     private final String TAG = "Profile";
     private String facialID;
 
@@ -36,10 +40,14 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        userID = getIntent().getStringExtra("userID");
+        String userID = getIntent().getStringExtra("userID");
         getData(userID);
     }
 
+    /**
+     * function retrieve the information from the backend
+     * @param userID the id of the user
+     */
     private void getData(String userID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(userID);
@@ -94,6 +102,10 @@ public class Profile extends AppCompatActivity {
         this.facialID = facialID;
     }
 
+    /**
+     * download the photo from firebase storage and set accordingly
+     * @param source
+     */
     private void setPhoto(String source) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -118,7 +130,10 @@ public class Profile extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * onClick method navigate the user to the verification activity
+     * @param view the clicked view
+     */
     public void goToVerification(View view) {
         Intent intent = new Intent(Profile.this, Verification.class);
         intent.putExtra("facialID", facialID);

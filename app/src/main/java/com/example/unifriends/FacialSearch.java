@@ -40,15 +40,84 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
+/**
+ * Author: Li He
+ * Email: lhe3@student.unimelb.edu.au
+ * FacialSearch Class scan the faces and navigate to the users' profile page is the
+ * person is registered on our app
+ */
 public class FacialSearch extends AppCompatActivity {
 
     private final int PICK_IMAGE = 1;
-    private final String apiEndpoint = "https://tryface.cognitiveservices.azure.com/face/v1.0";
-    private final String subscriptionKey = "40fef214516e4321bff17da500858306";
     private final String TAG = "Facial Search";
-    private final FaceServiceClient faceServiceClient =
+
+    private static final String apiEndpoint = "https://tryface.cognitiveservices.azure.com/face/v1.0";
+    private static final String subscriptionKey = "40fef214516e4321bff17da500858306";
+    private static final FaceServiceClient faceServiceClient =
             new FaceServiceRestClient(apiEndpoint, subscriptionKey);
+
     private Face[] faces;
+
+    /* async task to detect the face in the photo */
+    private static class DetectTask extends AsyncTask<InputStream, String, Face[]>{
+        String exceptionMessage = "";
+
+        @Override
+        protected Face[] doInBackground(InputStream... inputStreams) {
+            try {
+                return faceServiceClient.detect(
+                        inputStreams[0],
+                        true,         // returnFaceId
+                        false,        // returnFaceLandmarks
+                        null          // returnFaceAttributes:
+                                    /* new FaceServiceClient.FaceAttributeType[] {
+                                        FaceServiceClient.FaceAttributeType.Age,
+                                        FaceServiceClient.FaceAttributeType.Gender }
+                                    */
+                );
+            } catch (Exception e) {
+                exceptionMessage = String.format(
+                        "Detection failed: %s", e.getMessage());
+                return null;
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            //TODO: show progress dialog
+//                        detectionProgressDialog.show();
+        }
+        @Override
+        protected void onProgressUpdate(String... progress) {
+            //TODO: update progress
+//                        detectionProgressDialog.setMessage(progress[0]);
+        }
+    }
+
+    /* async task to detect the face in the photo */
+    private static class VerifyTask extends AsyncTask<UUID[], String, VerifyResult>{
+        String exceptionMessage = "";
+
+        @Override
+        protected VerifyResult doInBackground(UUID[]... faceIds) {
+            try {
+                return faceServiceClient.verify(faceIds[0][0], faceIds[0][1]);
+            } catch (Exception e) {
+                exceptionMessage = String.format(
+                        "Detection failed: %s", e.getMessage());
+                return null;
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            //TODO: show progress dialog
+//                        detectionProgressDialog.show();
+        }
+        @Override
+        protected void onProgressUpdate(String... progress) {
+            //TODO: update progress
+//                        detectionProgressDialog.setMessage(progress[0]);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,93 +187,18 @@ public class FacialSearch extends AppCompatActivity {
 
 
     private Face[] detectAndFrame(final Bitmap imageBitmap) {
-
-        String apiEndpoint = "https://tryface.cognitiveservices.azure.com/face/v1.0";
-        String subscriptionKey = "40fef214516e4321bff17da500858306";
-        final FaceServiceClient faceServiceClient =
-                new FaceServiceRestClient(apiEndpoint, subscriptionKey);
-
-        final UUID[] mFaceId0 = new UUID[1];
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         ByteArrayInputStream inputStream =
                 new ByteArrayInputStream(outputStream.toByteArray());
 
-        AsyncTask<InputStream, String, Face[]> detectTask =
-                new AsyncTask<InputStream, String, Face[]>() {
-                    String exceptionMessage = "";
-
-                    @Override
-                    protected Face[] doInBackground(InputStream... params) {
-                        try {
-                            publishProgress("Detecting...");
-                            Face[] result = faceServiceClient.detect(
-                                    params[0],
-                                    true,         // returnFaceId
-                                    false,        // returnFaceLandmarks
-                                    null          // returnFaceAttributes:
-                                    /* new FaceServiceClient.FaceAttributeType[] {
-                                        FaceServiceClient.FaceAttributeType.Age,
-                                        FaceServiceClient.FaceAttributeType.Gender }
-                                    */
-                            );
-                            if (result == null){
-                                publishProgress(
-                                        "Detection Finished. Nothing detected");
-                                return null;
-                            }
-                            publishProgress(String.format(
-                                    "Detection Finished. %d face(s) detected",
-                                    result.length));
-                            return result;
-                        } catch (Exception e) {
-                            exceptionMessage = String.format(
-                                    "Detection failed: %s", e.getMessage());
-                            return null;
-                        }
-                    }
-
-//                    @Override
-//                    protected void onPreExecute() {
-//                        //TODO: show progress dialog
-//                        detectionProgressDialog.show();
-//                    }
-//                    @Override
-//                    protected void onProgressUpdate(String... progress) {
-//                        //TODO: update progress
-//                        detectionProgressDialog.setMessage(progress[0]);
-//                    }
-
-                    private static final String LOG_TAG = "LogActivity";
-
-                    @Override
-                    protected void onPostExecute(Face[] result) {
-                        //TODO: update face frames
-//                        detectionProgressDialog.dismiss();
-
-//                        if(!exceptionMessage.equals("")){
-//                            showError(exceptionMessage);
-//                        }
-                        if (result == null) return;
-
-                        ImageView imageView = findViewById(R.id.imageView1);
-                        imageView.setImageBitmap(
-                                drawFaceRectanglesOnBitmap(imageBitmap, result));
-
-
-                        for (Face face : result) {
-                            UUID mFaceId = face.faceId;
-                            mFaceId0[0] = mFaceId;
-                            Log.d(LOG_TAG, mFaceId.toString());
-                        }
-
-                        //TextView textView = findViewById(R.id.verifyText);
-                        //textView.setText(result[1].toString());
-                    }
-                };
-
+        DetectTask detectTask = new DetectTask();
         try{
-            return detectTask.execute(inputStream).get();
+            Face[] faces = detectTask.execute(inputStream).get();
+            ImageView imageView = findViewById(R.id.imageView1);
+            imageView.setImageBitmap(
+                    drawFaceRectanglesOnBitmap(imageBitmap, faces));
+            return faces;
         }catch (Exception e){
             return null;
         }
@@ -252,6 +246,8 @@ public class FacialSearch extends AppCompatActivity {
                                 continue;
                             }
                             if (verify( document.get("facialID").toString(), faceId)){
+                                Log.d(TAG, document.get("facialID").toString()
+                                        + "  " + faceId.toString() );
                                 Log.d(TAG, "Found, userId: " + document.getId() );
                                 Intent intent = new Intent(FacialSearch.this, Profile.class);
                                 intent.putExtra("userID", document.getId());
@@ -275,90 +271,10 @@ public class FacialSearch extends AppCompatActivity {
     }
 
     private boolean verify(String uuidProfile, UUID faceID){
-        final UUID selected = faceID;
-        final UUID profilePhoto = UUID.fromString(uuidProfile);
-
-//        try  {
-//            //Your code goes here
-//            VerifyResult result = faceServiceClient.verify(selected, profilePhoto);
-//            DecimalFormat formatter = new DecimalFormat("#0.00");
-//            String verificationResult = (result.isIdentical ? "The same person": "Different persons")
-//                    + ". The confidence is " + formatter.format(result.confidence);
-//            Log.d(TAG, verificationResult);
-//
-//            if (result.isIdentical){
-//                Log.d(TAG, "Identical Person");
-//                return true;
-//            }else{
-//                Log.d(TAG, "Log In Failed.Different Person");
-//                return false;
-//            }
-//
-////                    TextView textView = findViewById(R.id.verifyText);
-////                    textView.setText(verificationResult);
-//        } catch (Exception e) {
-//            Log.d(TAG, "fail to verify" + e.toString());
-////                    TextView textView = findViewById(R.id.verifyText);
-////                    textView.setText("fail to verify");
-//        }
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ByteArrayInputStream inputStream =
-                new ByteArrayInputStream(outputStream.toByteArray());
-
-        AsyncTask<InputStream, String, VerifyResult> detectTask =
-                new AsyncTask<InputStream, String, VerifyResult>() {
-                    String exceptionMessage = "";
-
-                    @Override
-                    protected VerifyResult doInBackground(InputStream... params) {
-                        try {
-//                            publishProgress("Detecting...");
-                            VerifyResult result = faceServiceClient.verify(selected, profilePhoto);
-                            if (result == null){
-                                publishProgress(
-                                        "Detection Finished. Nothing detected");
-                                return null;
-                            }
-//                            publishProgress(String.format(
-//                                    "Detection Finished. %d face(s) detected",
-//                                    result.length));
-                            return result;
-                        } catch (Exception e) {
-                            exceptionMessage = String.format(
-                                    "Detection failed: %s", e.getMessage());
-                            return null;
-                        }
-                    }
-
-//                    @Override
-//                    protected void onPreExecute() {
-//                        //TODO: show progress dialog
-//                        detectionProgressDialog.show();
-//                    }
-//                    @Override
-//                    protected void onProgressUpdate(String... progress) {
-//                        //TODO: update progress
-//                        detectionProgressDialog.setMessage(progress[0]);
-//                    }
-
-                    private static final String LOG_TAG = "LogActivity";
-
-
-                    protected void onPostExecute(Face[] result) {
-                        //TODO: update face frames
-//                        detectionProgressDialog.dismiss();
-
-//                        if(!exceptionMessage.equals("")){
-//                            showError(exceptionMessage);
-//                        }
-
-                        //TextView textView = findViewById(R.id.verifyText);
-                        //textView.setText(result[1].toString());
-                    }
-                };
-
+        final UUID[] faceIds = new UUID[] {faceID, UUID.fromString(uuidProfile)};
+        VerifyTask verifyTask = new VerifyTask();
         try{
-            return detectTask.execute(inputStream).get().isIdentical;
+            return verifyTask.execute(faceIds).get().isIdentical;
         }catch (Exception e){
             return false;
         }

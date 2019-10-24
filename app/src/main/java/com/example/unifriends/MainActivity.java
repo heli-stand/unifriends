@@ -1,21 +1,9 @@
 package com.example.unifriends;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
-import com.example.unifriends.chat.ChatRoomActivity;
-import com.example.unifriends.events.Calendar;
-import com.example.unifriends.friendFinder.FindFriends;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,8 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.unifriends.chat.ChatActivity;
+import com.example.unifriends.chat.ChatRoomActivity;
+import com.example.unifriends.events.Calendar;
+import com.example.unifriends.friendFinder.FindFriends;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//        FirebaseAuth.getInstance().signOut();
+//        Log.e(TAG, FirebaseAuth.getInstance().getUid());
         user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user == null){
-            startActivity(new Intent(MainActivity.this, Login.class));
+        if ( user == null){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }else{
             getUserId();
             setProfile();
@@ -85,9 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-
-
     }
 
 
@@ -134,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToProfile(View view){
         Intent intent = new Intent(MainActivity.this, Profile.class);
-        intent.putExtra("userID", user.getUid());
+        intent.putExtra("userID", FirebaseAuth.getInstance().getUid());
         startActivity(intent);
     }
 

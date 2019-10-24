@@ -38,11 +38,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * Signup class is the first step of the all sign up process
+ */
 public class Signup extends AppCompatActivity{
 
     private static final String TAG = "EmailPassword";
     private FirebaseAuth mAuth;
-
     private EditText emailEditText;
     private EditText passwordEditText;
 
@@ -63,12 +65,11 @@ public class Signup extends AppCompatActivity{
         overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
     }
 
+    /**
+     * onClick method, create an account and update user info on the firestore
+     * @param view
+     */
     public void nextStep(View view) {
-        // [START verify_with_code]
-//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId,
-//                mCodeField.getText().toString());
-        // [END verify_with_code]
-
         final String email = emailEditText.getText().toString();
         final String password = passwordEditText.getText().toString();
 
@@ -102,6 +103,12 @@ public class Signup extends AppCompatActivity{
 
     }
 
+    /**
+     * create a document for the user
+     * @param id user id
+     * @param email email address
+     * @param password password
+     */
     private void uploadUserInfo(String id, String email, String password){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
