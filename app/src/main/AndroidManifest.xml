@@ -86,6 +86,7 @@
             android:name=".events.Calendar"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".chat.ChatRoomActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

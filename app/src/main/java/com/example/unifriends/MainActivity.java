@@ -4,30 +4,27 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import com.example.unifriends.chat.ChatRoomActivity;
 import com.example.unifriends.events.Calendar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.unifriends.chat.ChatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main";
 
 
-//    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final int RC_SIGN_IN = 123;
     private FirebaseUser user;
     TextView welcomeMessage, signOut, chatActivity;
@@ -48,12 +45,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user == null){
+        if (user == null) {
             startActivity(new Intent(MainActivity.this, Login.class));
-        }else{
+        } else {
             getUserId();
             setProfile();
             welcomeMessage = findViewById(R.id.greeting_msg);
@@ -65,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     FirebaseAuth.getInstance().signOut();
-                    sp.edit().putBoolean("logged",false).apply();
+                    sp.edit().putBoolean("logged", false).apply();
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
                 }
@@ -75,17 +71,16 @@ public class MainActivity extends AppCompatActivity {
             chatActivity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sp.edit().putBoolean("logged",true).apply();
-                    startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                    sp.edit().putBoolean("logged", true).apply();
+                    startActivity(new Intent(MainActivity.this, ChatRoomActivity.class));
+
+                    //startActivity(new Intent(MainActivity.this, ChatActivity.class));
                 }
             });
         }
 
 
-
     }
-
-
 
 
     private void getUserId() {
@@ -107,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                             DocumentSnapshot doc = task.getResult();
                             welcomeMessage.setText(String.format("Welcome, %s!", doc.getString("name")));
                             setPhoto(doc.get("photo").toString());
-                            sp.edit().putString("name",doc.getString("name")).apply();
+                            sp.edit().putString("name", doc.getString("name")).apply();
                             findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
                         } else {
@@ -121,19 +116,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void goToFacialSearch(View view){
+    public void goToFacialSearch(View view) {
         Intent intent = new Intent(MainActivity.this, FacialSearch.class);
         startActivity(intent);
     }
 
 
-    public void goToProfile(View view){
+    public void goToProfile(View view) {
         Intent intent = new Intent(MainActivity.this, Profile.class);
         intent.putExtra("userID", user.getUid());
         startActivity(intent);
     }
 
-    private void setPhoto(String source){
+    private void setPhoto(String source) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
@@ -157,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void goToEvent(View view){
+    public void goToEvent(View view) {
         Intent intent = new Intent(MainActivity.this, Calendar.class);
         startActivity(intent);
     }
