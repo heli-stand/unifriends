@@ -127,7 +127,6 @@
                                 android:drawablePadding="10dp"
                                 android:gravity="center"
                                 android:maxLines="1"
-                                android:onClick="goToFindFriends"
                                 android:singleLine="true"
                                 android:onClick="goToFindFriends"
                                 android:text="Find Friends"
