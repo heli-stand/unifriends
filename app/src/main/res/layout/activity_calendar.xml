@@ -231,6 +231,7 @@
             android:layout_below="@+id/time"
             android:background="#ffffff"
             android:enabled="false"
+            android:onClick="createEvent"
             android:text="Add Event" />
 
 

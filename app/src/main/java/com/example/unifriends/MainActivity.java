@@ -29,16 +29,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main";
 
 
-//    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final int RC_SIGN_IN = 123;
     private FirebaseUser user;
     TextView welcomeMessage, signOut, chatActivity;
@@ -159,8 +162,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToEvent(View view){
-        Intent intent = new Intent(MainActivity.this, Calendar.class);
-        startActivity(intent);
+
+
+        DocumentReference docRef = db.collection("users").document(FirebaseAuth.getInstance().getUid());
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.get("groups").toString());
+                        List<String> groups = (List<String>)document.get("groups");
+                        Log.d(TAG, "DocumentSnapshot data: " + groups.get(0));
+
+                        Intent intent = new Intent(MainActivity.this, Calendar.class);
+                        intent.putExtra("gourpId", groups.get(0));
+                        startActivity(intent);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
     }
 
 }
