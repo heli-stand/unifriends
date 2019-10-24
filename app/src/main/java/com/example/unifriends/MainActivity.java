@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import com.example.unifriends.chat.ChatRoomActivity;
 import com.example.unifriends.events.Calendar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     sp.edit().putBoolean("logged",true).apply();
-                    startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                    startActivity(new Intent(MainActivity.this, ChatRoomActivity.class));
                 }
             });
         }
