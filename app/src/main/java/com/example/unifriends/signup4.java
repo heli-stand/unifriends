@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -53,9 +55,12 @@ public class signup4 extends AppCompatActivity {
                     Log.d("Onclick", java.util.Arrays.toString(interests) );
                 }
             });
+
             sub_layout.addView(ch);
         }
-        ll.addView(sub_layout);
+
+
+        ll.addView(sub_layout, 0);
 
     }
 
