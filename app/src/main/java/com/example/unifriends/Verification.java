@@ -26,6 +26,11 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
+/**
+ * Author: Li He
+ * Email: lhe3@student.unimelb.edu.au
+ * Verification Class verifies the identity of a user
+ */
 public class Verification extends AppCompatActivity {
 
     ImageView imageView;
@@ -159,9 +164,7 @@ public class Verification extends AppCompatActivity {
 
                 try  {
                     //Your code goes here
-                    VerifyResult result;
-                    result = new VerifyResult();
-                    result = faceServiceClient.verify(uuidProfile, photoTaken);
+                    VerifyResult result = faceServiceClient.verify(uuidProfile, photoTaken);
                     DecimalFormat formatter = new DecimalFormat("#0.00");
                     String verificationResult = (result.isIdentical ? "The same person": "Different persons")
                             + ". The confidence is " + formatter.format(result.confidence);

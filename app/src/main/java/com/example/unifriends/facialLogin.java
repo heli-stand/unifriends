@@ -32,17 +32,59 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.microsoft.projectoxford.face.*;
 import com.microsoft.projectoxford.face.contract.*;
 
+/**
+ * Author: Li He
+ * Email: lhe3@student.unimelb,edu.au
+ * This class processes the photo picked by the user which is then compared to the faceid stored
+ * stored for that particular email address, sign  in the user if they are identical
+ */
 public class facialLogin extends AppCompatActivity {
 
     private final String TAG = "FacialLogin";
     private final int PICK_IMAGE = 1;
 
-    private final String apiEndpoint = "https://tryface.cognitiveservices.azure.com/face/v1.0";
-    private final String subscriptionKey = "40fef214516e4321bff17da500858306";
-    private final FaceServiceClient faceServiceClient =
+    private static final String apiEndpoint = "https://tryface.cognitiveservices.azure.com/face/v1.0";
+    private static final String subscriptionKey = "40fef214516e4321bff17da500858306";
+    private static final FaceServiceClient faceServiceClient =
             new FaceServiceRestClient(apiEndpoint, subscriptionKey);
 
     private UUID selectedImage;
+
+    /* async task to detect the face in the photo */
+    private static class DetectTask extends AsyncTask<InputStream, String, Face[]>{
+        String exceptionMessage = "";
+
+        @Override
+        protected Face[] doInBackground(InputStream... inputStreams) {
+            try {
+//                            publishProgress("Detecting...");
+                return faceServiceClient.detect(
+                        inputStreams[0],
+                        true,         // returnFaceId
+                        false,        // returnFaceLandmarks
+                        null          // returnFaceAttributes:
+                                    /* new FaceServiceClient.FaceAttributeType[] {
+                                        FaceServiceClient.FaceAttributeType.Age,
+                                        FaceServiceClient.FaceAttributeType.Gender }
+                                    */
+                );
+            } catch (Exception e) {
+                exceptionMessage = String.format(
+                        "Detection failed: %s", e.getMessage());
+                return null;
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            //TODO: show progress dialog
+//                        detectionProgressDialog.show();
+        }
+        @Override
+        protected void onProgressUpdate(String... progress) {
+            //TODO: update progress
+//                        detectionProgressDialog.setMessage(progress[0]);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +92,7 @@ public class facialLogin extends AppCompatActivity {
         setContentView(R.layout.activity_facial_login);
     }
 
+    /* onclick method to choose image*/
     public void chooseImage(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -57,6 +100,12 @@ public class facialLogin extends AppCompatActivity {
                 intent, "Select Picture"), PICK_IMAGE);
     }
 
+    /**
+     * handling the photo selected
+     * @param requestCode request code
+     * @param resultCode result code
+     * @param data data passed in
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -69,107 +118,38 @@ public class facialLogin extends AppCompatActivity {
 
                 ImageView imageView = findViewById(R.id.imageView1);
                 imageView.setImageBitmap(bitmap);
-
-//                // Comment out for tutorial
-//                facialID = detectAndFrame(bitmap);
                 selectedImage = detect(bitmap);
 
-//                Log.e("facialLogin", Id1.toString());
-
-//                verify(Id0,Id1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * detect the faces in the photo
+     * @param imageBitmap the selected photo
+     * @return the first face detected by the microsoft api
+     */
     private UUID detect(final Bitmap imageBitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         ByteArrayInputStream inputStream =
                 new ByteArrayInputStream(outputStream.toByteArray());
-        final UUID[] mFaceId0 = new UUID[1];
-        AsyncTask<InputStream, String, Face[]> detectTask =
-                new  AsyncTask<InputStream, String, Face[]>() {
-                    String exceptionMessage = "";
-
-                    @Override
-                    protected Face[] doInBackground(InputStream... params) {
-                        try {
-//                            publishProgress("Detecting...");
-                            Face[] result = faceServiceClient.detect(
-                                    params[0],
-                                    true,         // returnFaceId
-                                    false,        // returnFaceLandmarks
-                                    null          // returnFaceAttributes:
-                                    /* new FaceServiceClient.FaceAttributeType[] {
-                                        FaceServiceClient.FaceAttributeType.Age,
-                                        FaceServiceClient.FaceAttributeType.Gender }
-                                    */
-                            );
-                            if (result == null){
-//                                publishProgress(
-//                                        "Detection Finished. Nothing detected");
-                                return null;
-                            }
-//                            publishProgress(String.format(
-//                                    "Detection Finished. %d face(s) detected",
-//                                    result.length));
-                            return result;
-                        } catch (Exception e) {
-                            exceptionMessage = String.format(
-                                    "Detection failed: %s", e.getMessage());
-                            return null;
-                        }
-                    }
-
-                    @Override
-                    protected void onPreExecute() {
-                        //TODO: show progress dialog
-//                        detectionProgressDialog.show();
-                    }
-                    @Override
-                    protected void onProgressUpdate(String... progress) {
-                        //TODO: update progress
-//                        detectionProgressDialog.setMessage(progress[0]);
-                    }
-
-                    private static final String LOG_TAG = "LogActivity";
-
-                    @Override
-                    protected void onPostExecute(Face[] result) {
-                        //TODO: update face frames
-//                        detectionProgressDialog.dismiss();
-
-                        if(!exceptionMessage.equals("")){
-//                            showError(exceptionMessage);
-                        }
-                        if (result == null) return;
-
-                        for (Face face : result) {
-                            UUID mFaceId = face.faceId;
-                            mFaceId0[0] = mFaceId;
-//                            Log.d(LOG_TAG, mFaceId.toString());
-                        }
-
-                        //TextView textView = findViewById(R.id.verifyText);
-                        //textView.setText(result[1].toString());
-                    }
-                };
         try{
+            DetectTask detectTask = new DetectTask();
             return detectTask.execute(inputStream).get()[0].faceId;
         }catch (Exception e){
             return null;
         }
     }
 
-    public void back(View view){
-        finish();
-    }
-
+    /**
+     * onClick function handles the verification
+     * @param view clicked view
+     */
     public void login(View view){
-
-        final String email = ((EditText)findViewById(R.id.editText1)).getText().toString();
+        final String email = ((EditText)findViewById(R.id.editTextEmail)).getText().toString();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("users")
@@ -197,6 +177,12 @@ public class facialLogin extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Using Microsoft api to verify if two persons are identical
+     * @param email registered email
+     * @param password user's password
+     * @param uuid a string stored to construct uuid
+     */
     private void verify(final String email, final String password, String uuid){
         final UUID uuidProfile = UUID.fromString(uuid);
 
@@ -233,6 +219,11 @@ public class facialLogin extends AppCompatActivity {
         thread.start();
     }
 
+    /**
+     * sign in the user using the user's email and password
+     * @param email email address
+     * @param password password
+     */
     private void signin(String email, String password){
         final FirebaseAuth mAuth =  FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email, password)

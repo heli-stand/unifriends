@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -33,16 +34,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * Signup class is the first step of the all sign up process
+ */
 public class Signup extends AppCompatActivity{
 
     private static final String TAG = "EmailPassword";
     private FirebaseAuth mAuth;
-
     private EditText emailEditText;
     private EditText passwordEditText;
 
@@ -63,16 +67,25 @@ public class Signup extends AppCompatActivity{
         overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
     }
 
+    /**
+     * onClick method, create an account and update user info on the firestore
+     * @param view
+     */
     public void nextStep(View view) {
-        // [START verify_with_code]
-//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId,
-//                mCodeField.getText().toString());
-        // [END verify_with_code]
-
         final String email = emailEditText.getText().toString();
         final String password = passwordEditText.getText().toString();
 
         findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Invalid Email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 8) {
+            Toast.makeText(this, "Password is too short!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -99,15 +112,25 @@ public class Signup extends AppCompatActivity{
                         // ...
                     }
                 });
-
     }
 
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+    /**
+     * create a document for the user
+     * @param id user id
+     * @param email email address
+     * @param password password
+     */
     private void uploadUserInfo(String id, String email, String password){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("password", password);
+        user.put("location", new GeoPoint(-37.7983, 144.9610));
 
         db.collection("users").document(id)
                 .set(user)

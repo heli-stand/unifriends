@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Signup3"
+    tools:context=".SignupSubjects"
     android:background="@color/register_bk_color"
     android:focusableInTouchMode="true"
     android:gravity="center"
@@ -23,6 +23,7 @@
             android:orientation="vertical"
             android:padding="20dp"
             android:layout_marginTop="30dp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -53,62 +54,70 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your subject codes" />
+
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputName"
+                        android:id="@+id/textInputSub1"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextName"
+                            android:id="@+id/editTextSub1"
                             style="@style/modifiedEditText"
                             android:inputType="textPersonName"
                             android:maxLines="1"
-                            android:hint="Full Name"/>
+                            android:hint="Subject 1"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputUniName"
+                        android:id="@+id/textInputSub2"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextUniName"
+                            android:id="@+id/editTextSub2"
                             style="@style/modifiedEditText"
-                            android:inputType="text"
+                            android:inputType="textPersonName"
                             android:maxLines="1"
-                            android:hint="University Name"/>
+                            android:hint="Subject 2"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Degree"
-                        style="@style/TextView.InputLabel"
-                        android:layout_marginTop="@dimen/registerViewsMargin"
-                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputSub3"
+                        style="@style/parent"
+                        android:layout_marginTop="@dimen/loginViewsMargin">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextSub3"
+                            style="@style/modifiedEditText"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:hint="Subject 3"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/degreeSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Major"
-                        style="@style/TextView.InputLabel"
-                        android:layout_marginTop="@dimen/registerViewsMargin"
-                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputSub4"
+                        style="@style/parent"
+                        android:layout_marginTop="@dimen/loginViewsMargin">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextSub4"
+                            style="@style/modifiedEditText"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:hint="Subject 4"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/majorSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        />
+
+
+
+
+
+
+
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRegister"
@@ -117,8 +126,9 @@
                         android:text="Next"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/registerViewsMargin"
-                        android:onClick="updateUserInfo"
+                        android:onClick="updateSubjectInfo"
                         />
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
             <LinearLayout

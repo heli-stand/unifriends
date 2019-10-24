@@ -1,33 +1,29 @@
 package com.example.unifriends;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Author: Li He
+ * Email: lhe3@student.unimelb.edu.au
+ * Class Signup3 signs up user's basic information, including name, major, degree ...
+ */
 public class Signup3 extends AppCompatActivity {
     private static final String TAG = "Signup3";
     private Spinner degreeSpinner;
@@ -45,6 +41,7 @@ public class Signup3 extends AppCompatActivity {
         nameEditText = findViewById(R.id.editTextName);
         uniEditText = findViewById(R.id.editTextUniName);
 
+        /* initialise two spinners for degree and major */
         degreeSpinner = findViewById(R.id.degreeSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> degreeAdapter = ArrayAdapter.createFromResource(this,
@@ -64,6 +61,10 @@ public class Signup3 extends AppCompatActivity {
         majorSpinner.setAdapter(majorAdapter);
     }
 
+    /**
+     * onClick method. update the user's info
+     * @param view
+     */
     public void updateUserInfo(View view){
 //        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 
@@ -77,6 +78,7 @@ public class Signup3 extends AppCompatActivity {
 
         Log.d(TAG, id);
 
+        /* create a map object to store the data*/
         Map<String, Object> update = new HashMap<>();
         update.put("degree", degree);
         update.put("major", major);
@@ -86,18 +88,14 @@ public class Signup3 extends AppCompatActivity {
         update.put("facialID", getIntent().getStringExtra("facialID"));
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         db.collection("users").document(id)
                 .update(update)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        Intent intent = new Intent(getApplicationContext(), signup4.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-//                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-
+                        Intent intent = new Intent(getApplicationContext(), SignupSubjects.class);
+                        // to the next step
                         startActivity(intent);
                     }
                 })

@@ -18,7 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-
+/**
+ * Author: Li, David
+ * This class contains the functions naviagting users to sign up, facial sign in or directly sign
+ * in using email and password
+ */
 public class LoginActivity extends AppCompatActivity {
     private EditText emailTV, passwordTV;
     private Button loginBtn;
@@ -69,6 +73,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.btnLogin);
     }
 
+    /**
+     * function logs in the user using email and password. google auth api used
+     */
     public void login() {
         String email, password;
         email = emailTV.getText().toString();
@@ -100,6 +107,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * function navigates the user to the page of facial log in
+     * @param view
+     */
     public void facialLogin(View view){startActivity(new Intent(LoginActivity.this,
             facialLogin.class)); }
 }

@@ -1,122 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--created based on https://appsnipp.com/free-android-clean-ui-login-registration-design-with-source-code/-->
+<!--We modified the template so it complies Material Design standard-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/linear_layout">
-    <!--<CheckBox android:id="@+id/checkbox_music"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Music"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_traveling"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Traveling"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_dancing"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Dancing"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_movies"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Movies"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_reading"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Reading"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_writing"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Writing"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_going_out"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Going Out"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_sports"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Sports"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_gaming"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Gaming"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_blogging"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Blogging"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_foodie"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Foodie"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_history"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="History"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_outdoors"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Outdoors"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_technology"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Technology"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_cooking"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Cooking"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_programming"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Programming"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_pets"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Pets"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_cars"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Cars"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_gym"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Gym"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
-    <!--<CheckBox android:id="@+id/checkbox_gardening"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Gardening"-->
-        <!--android:onClick="onCheckboxClicked"/>-->
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".signup4"
+    android:background="@color/register_bk_color"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:layout_gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_marginTop="30dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    style="@style/viewParent.headerText.NoMode"
+                    android:textColor="@color/whiteTextColor"
+                    android:text="Registration\nfinal step!\n"/>
 
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="274dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="submit"
-        android:text="Submit" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_login_hero"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
 
-</LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="235dp"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/whiteTextColor"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:id="@+id/linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/whiteTextColor"
+                app:cardCornerRadius="10dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:onClick="submit"
+                    android:text="Finish" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
+
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/linear_layout">
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_music"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Music"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_traveling"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Traveling"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_dancing"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Dancing"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_movies"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Movies"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_reading"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Reading"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_writing"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Writing"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_going_out"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Going Out"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_sports"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Sports"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_gaming"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Gaming"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_blogging"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Blogging"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_foodie"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Foodie"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_history"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="History"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_outdoors"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Outdoors"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_technology"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Technology"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_cooking"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Cooking"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_programming"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Programming"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_pets"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Pets"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_cars"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Cars"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_gym"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Gym"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+        &lt;!&ndash;<CheckBox android:id="@+id/checkbox_gardening"&ndash;&gt;
+            &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+            &lt;!&ndash;android:text="Gardening"&ndash;&gt;
+            &lt;!&ndash;android:onClick="onCheckboxClicked"/>&ndash;&gt;
+
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="274dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="submit"
+            android:text="Submit" />
+
+    </LinearLayout>-->

@@ -7,6 +7,7 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,11 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".groups.createGroup"></activity>
-
-        <activity android:name=".signup4"></activity>
-
+        <activity android:name=".SignupSubjects"></activity>
+        <activity android:name=".groups.createGroup" />
+        <activity
+            android:name=".Signup4"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Profile"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -34,9 +35,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Signup"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Verification"
@@ -90,7 +88,9 @@
             android:name=".events.Calendar"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".chat.ChatRoomActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".chat.ChatRoomActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
