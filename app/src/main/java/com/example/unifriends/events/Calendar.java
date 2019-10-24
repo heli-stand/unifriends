@@ -31,6 +31,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.unifriends.MainActivity;
 import com.example.unifriends.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -246,10 +248,31 @@ public class Calendar extends AppCompatActivity {
 
         Map<String, Object> update = new HashMap<>();
 
-        ArrayList<String[]> temp = new ArrayList<String[]>(Arrays.asList(events));
-        String[] newEvent = {newDate, newName, newSubject, newDescription, newTime};
-        temp.add(newEvent);
-        update.put("interets", Arrays.asList(temp));
+        update.put("date", newDate);
+        update.put("name",newName);
+        update.put("subject", newSubject);
+        update.put("location", newDescription);
+        update.put("time", newTime);
+
+
+        db.collection("group").document(groupId).collection("events")
+                .add(update)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+//        ArrayList<String[]> temp = new ArrayList<String[]>(Arrays.asList(events));
+//        String[] newEvent = {newDate, newName, newSubject, newDescription, newTime};
+//        temp.add(newEvent);
+//        update.put("interets", Arrays.asList(temp));
 //        db.collection("group").document(groupId).update().
     }
 }
