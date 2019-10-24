@@ -48,6 +48,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -120,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
 //
                 Map<String, Object> update = new HashMap<>();
-                update.put("location", location);
+                GeoPoint locationGeopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+
+                update.put("location", locationGeopoint);
 
                 // ADD SEND LOCATION HERE
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
