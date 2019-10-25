@@ -16,7 +16,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,7 +88,9 @@ public class Signup3 extends AppCompatActivity {
         update.put("uni", uni);
         update.put("photo", "usersImage/" + id + ".jpg");
         update.put("facialID", getIntent().getStringExtra("facialID"));
-
+        List<String> groups = new ArrayList();
+        groups.add("Global Group");
+        update.put("groups", groups);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(id)
                 .update(update)
