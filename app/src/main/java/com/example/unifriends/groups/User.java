@@ -16,6 +16,7 @@ public class User implements Serializable {
     public List<String> subjects;
     public String uni;
     public List<String> groups;
+    private boolean checked;
 
     public User() {
 
@@ -33,6 +34,15 @@ public class User implements Serializable {
         this.subjects=subjects;
         this.uni=uni;
         this.groups=groups;
+        checked = false;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public void setId(String documentId) {

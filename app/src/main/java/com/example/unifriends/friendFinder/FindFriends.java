@@ -43,12 +43,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.unifriends.groups.CreateGroup.allUsers;
-import static com.example.unifriends.groups.CreateGroup.allUsersIdName;
-import static com.example.unifriends.groups.CreateGroup.allUsersSubjects;
-import static com.example.unifriends.groups.CreateGroup.usersSubjects;
-
-
 public class FindFriends extends AppCompatActivity {
     private static final String TAG = "FindFriends";
 
@@ -62,11 +56,6 @@ public class FindFriends extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         userID = getIntent().getStringExtra("userID");
-
-        getAllUsers();
-        getUsersSubjects();
-
-
 
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Entry.");
@@ -225,40 +214,6 @@ public class FindFriends extends AppCompatActivity {
 
     }
 
-    public void getUsersSubjects() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentReference docRef = db.collection("users").document(userID);
-
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-
-                        Log.i("subjects tester", document.get("subjects").toString());
-                        String test = document.get("subjects").toString();
-                        String test2 = test.replaceAll("[^\\w\\s]", "");
-                        String test3 = test2.trim();
-                        String[] subjects = test3.split("\\s+");
-                        for(String s: subjects) {
-                            usersSubjects.add(s);
-                        }
-
-                    } else {
-                        Log.i("error", "No such document");
-
-
-                    }
-                } else {
-                    Log.i("error", "get failed with ", task.getException());
-
-
-                }
-            }
-        });
-    }
-
     private void setPhoto(String source, final ImageView imageView){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -279,42 +234,6 @@ public class FindFriends extends AppCompatActivity {
                 // Handle any errors
                 Log.d(TAG, exception.toString());
             }
-        });
-    }
-
-    public void getAllUsers() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    QuerySnapshot results = task.getResult();
-
-                    List<DocumentSnapshot> list = results.getDocuments();
-
-                    for(DocumentSnapshot d: list) {
-                        Log.i("result", d.get("subjects").toString());
-                        String test = d.get("subjects").toString();
-                        String test2 = test.replaceAll("[^\\w\\s]", "");
-                        String test3 = test2.trim();
-                        String[] subjects = test3.split("\\s+");
-
-                        if(subjects.length != 0) {
-
-                            Log.i("particular user subjects", Arrays.toString((subjects)));
-
-                            User u = d.toObject(User.class);
-                            u.setId(d.getId());
-                            allUsers.add(u);
-                            allUsersSubjects.put(d.getId(), subjects);
-                            allUsersIdName.put(d.getId(), d.get("name").toString());
-                        }
-                    }
-                }
-
-            }
-
-
         });
     }
 

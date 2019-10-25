@@ -15,21 +15,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.unifriends.R;
+import com.example.unifriends.groups.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.primitives.Ints;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 public class FriendProfile extends AppCompatActivity {
     private static final String TAG = "FriendProfile";
@@ -101,6 +106,26 @@ public class FriendProfile extends AppCompatActivity {
         });
     }
 
+    public void checkIfFriend(String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users").document(id).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot user = task.getResult();
+                if (user.exists()) {
+
+                }
+            }
+        });
+    }
+
+    public void addFriend() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+    }
 
     public void goToMap(View view) {
 

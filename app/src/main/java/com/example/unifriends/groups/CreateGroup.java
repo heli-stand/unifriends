@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.example.unifriends.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,22 +34,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CreateGroup extends AppCompatActivity {
     public String userID;
+    private static final String TAG = "CreateGroup";
 
-    public static ArrayList<String> usersSubjects = new ArrayList<>();
-    public static HashMap<String,String[]> allUsersSubjects = new HashMap<String, String[]>();
+
     public ArrayList<String> matches = new ArrayList<>();
-
-    public static HashMap<String, String> allUsersIdName = new HashMap<>();
-
-    public static ArrayList<User> allUsers = new ArrayList<>();
-
-
     public static ArrayList<String> test = new ArrayList<>();
 
 
@@ -55,70 +53,59 @@ public class CreateGroup extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public static ArrayList<User> matchesUser = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-        userID = getIntent().getStringExtra("userID");
-
-
-        //get all users
-
-        for (String s: test) {
-            Log.i("results in test in oncreate", s);
-        }
-
-        for(User user: allUsers) {
-            Log.i("all users in create group", user.email);
-        }
-
-        for(String user: usersSubjects) {
-            Log.i("all subjects in user group", user);
-        }
+        userID = FirebaseAuth.getInstance().getUid();
 
 
         RecyclerView recyclerView = findViewById(R.id.allUsers);
-
         RecyclerView recyclerViewSubList = findViewById(R.id.friendsBySubList);
 
+        final ArrayList<User> allUsers = new ArrayList<>();
+        final ArrayList<User> matchesUser = new ArrayList<>();
 
-        MyAdapter myAdapter = new MyAdapter(this, allUsers);
-        MatchAdapter matchAdapter = new MatchAdapter(this, matchesUser);
+        final LayoutAdapter myAdapter = new LayoutAdapter(this, allUsers);
+        final MatchAdapter matchAdapter = new MatchAdapter(this, matchesUser);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdapter);
-
-        findMatches();
         recyclerViewSubList.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewSubList.setAdapter(matchAdapter);
 
-
+        getAllUsers(allUsers, myAdapter, matchAdapter, matchesUser);
     }
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+    public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.MyViewHolder> {
         Context context;
         ArrayList<User> users;
 
-        public MyAdapter(Context context, ArrayList<User> users) {
+        public LayoutAdapter(Context context, ArrayList<User> users) {
             this.context = context;
             this.users = users;
         }
 
         @NonNull
         @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        public LayoutAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.creategroupcustomlayout, viewGroup, false);
             return new MyViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
-            User user = users.get(position);
+        public void onBindViewHolder(@NonNull LayoutAdapter.MyViewHolder holder, int position) {
+            final User user = users.get(position);
 
             holder.textView.setText(user.name);
-            holder.checkBox.setId(position);
+            holder.checkBox.setOnCheckedChangeListener(null);
+            holder.checkBox.setChecked(user.isChecked());
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    user.setChecked(b);
+                }
+            });
         }
 
         @Override
@@ -157,10 +144,17 @@ public class CreateGroup extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull MatchAdapter.MyViewHolder holder, int position) {
-            User u = matches.get(position);
+            final User user = matches.get(position);
 
-            holder.textView.setText(u.name);
-            holder.checkBox.setId(position);
+            holder.textView.setText(user.name);
+            holder.checkBox.setOnCheckedChangeListener(null);
+            holder.checkBox.setChecked(user.isChecked());
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    user.setChecked(b);
+                }
+            });
         }
 
         @Override
@@ -181,7 +175,7 @@ public class CreateGroup extends AppCompatActivity {
         }
     }
 
-
+    /*
     public void checkboxClickedAllUsers(View view) {
         CheckBox c = ((CheckBox) view);
         Log.i("checked", Integer.toString(c.getId()) + allUsers.get(c.getId()).id );
@@ -205,8 +199,7 @@ public class CreateGroup extends AppCompatActivity {
         }
 
     }
-
-
+    */
 
 
     public void createGroup(View view) {
@@ -219,6 +212,8 @@ public class CreateGroup extends AppCompatActivity {
         Map<String, Object> data = new HashMap<>();
 
         //add current user to group
+
+
 
        if(selectedUsers.size() == 0 || groupName.equalsIgnoreCase("")) {
            Toast.makeText(getApplicationContext(),"Please enter a group name or select users to add to group",Toast.LENGTH_LONG).show();
@@ -270,7 +265,6 @@ public class CreateGroup extends AppCompatActivity {
         //add group
         DocumentReference userRef = db.collection("users").document(userId);
 
-
         currentEvents.add(groupRef);
 
         userRef
@@ -316,36 +310,9 @@ public class CreateGroup extends AppCompatActivity {
                 });
     }
 
-
-
-    public void getAllUsers() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    QuerySnapshot results = task.getResult();
-
-                    List<DocumentSnapshot> list = results.getDocuments();
-
-                    for(DocumentSnapshot d: list) {
-                        Log.i("result", d.getId());
-                        test.add(d.getId());
-                    }
-                }
-
-                for (String s: test) {
-                    Log.i("results in test", s);
-                }
-            }
-
-
-        });
-    }
-
-
-    public void findMatches() {
-        Log.i("etnered", "etnered");
+    public void findMatches(final ArrayList<User> allUsers, ArrayList<String> usersSubjects, final HashMap<String, String[]> allUsersSubjects,
+                            final HashMap<String, String> allUsersIdName, final ArrayList<User> matchesUser, final MatchAdapter matchAdapter) {
+        Log.i(TAG, "findMatches Entered");
 
         for(String s: usersSubjects) {
             Log.i("users subs in creategroup", s);
@@ -368,8 +335,6 @@ public class CreateGroup extends AppCompatActivity {
            Log.i("MATCHED USER", u.id);
         }
 
-
-
         for(String key: allUsersSubjects.keySet()) {
             String[] subjects = allUsersSubjects.get(key);
 
@@ -390,6 +355,94 @@ public class CreateGroup extends AppCompatActivity {
             Log.i("final match", match + " " + matches.size());
         }
 
+        matchAdapter.notifyDataSetChanged();
+    }
 
+    /*
+    public void getUsersSubjects(String userID) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final DocumentReference docRef = db.collection("users").document(userID);
+        final ArrayList<String> usersSubjects = new ArrayList<>();
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        Log.i("subjects tester", document.get("subjects").toString());
+                        String test = document.get("subjects").toString();
+                        String test2 = test.replaceAll("[^\\w\\s]", "");
+                        String test3 = test2.trim();
+                        String[] subjects = test3.split("\\s+");
+                        for(String s: subjects) {
+                            usersSubjects.add(s);
+                        }
+
+                    } else {
+                        Log.i(TAG, "No such document");
+                    }
+                } else {
+                    Log.i(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+    */
+
+    public void getAllUsers(final ArrayList<User> allUsers, final LayoutAdapter layoutAdapter, final MatchAdapter matchAdapter, final ArrayList<User> matchesUser) {
+        final HashMap<String,String[]> allUsersSubjects = new HashMap<String, String[]>();
+        final HashMap<String, String> allUsersIdName = new HashMap<>();
+        final ArrayList<String> usersSubjects = new ArrayList<>();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    QuerySnapshot results = task.getResult();
+
+                    List<DocumentSnapshot> list = results.getDocuments();
+
+                    for(DocumentSnapshot d: list) {
+                        if (d.getId().equals(FirebaseAuth.getInstance().getUid())) {
+                            String test = d.get("subjects").toString();
+                            String test2 = test.replaceAll("[^\\w\\s]", "");
+                            String test3 = test2.trim();
+                            String[] subjects = test3.split("\\s+");
+                            for(String s: subjects) {
+                                usersSubjects.add(s);
+                            }
+                        } else {
+
+                            Log.i(TAG, d.get("subjects").toString());
+                            String test = d.get("subjects").toString();
+                            String test2 = test.replaceAll("[^\\w\\s]", "");
+                            String test3 = test2.trim();
+                            String[] subjects = test3.split("\\s+");
+
+                            if (subjects.length != 0) {
+
+                                Log.i("particular user subjects", Arrays.toString((subjects)));
+
+                                User u = d.toObject(User.class);
+                                u.setId(d.getId());
+                                allUsers.add(u);
+                                allUsersSubjects.put(d.getId(), subjects);
+                                allUsersIdName.put(d.getId(), d.get("name").toString());
+                            }
+                        }
+                    }
+
+                    layoutAdapter.notifyDataSetChanged();
+
+                    findMatches(allUsers, usersSubjects, allUsersSubjects, allUsersIdName, matchesUser, matchAdapter);
+                }
+
+            }
+
+
+        });
     }
 }
