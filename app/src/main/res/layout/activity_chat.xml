@@ -20,6 +20,41 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id = "@+id/appbarlayout_tool_bar"
+            android:background = "@color/colorPrimary"
+            android:layout_width = "match_parent"
+            android:layout_height = "?attr/actionBarSize"
+            app:layout_scrollFlags = "scroll|snap|enterAlways"
+            app:theme = "@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme = "@style/ThemeOverlay.AppCompat.Dark"
+            app:titleTextColor="@android:color/holo_green_dark"
+            app:subtitle="Currently connected to this room"
+            app:subtitleTextColor="@android:color/holo_green_light"
+
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/grey" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@id/fab"
+            android:dividerHeight="16dp"
+            android:divider="@android:color/transparent"
+            android:id="@+id/list_of_messages"
+            android:layout_marginBottom="16dp"
+            android:transcriptMode="alwaysScroll"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,15 +83,5 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@id/fab"
-        android:dividerHeight="16dp"
-        android:divider="@android:color/transparent"
-        android:id="@+id/list_of_messages"
-        android:layout_marginBottom="16dp"
-       android:transcriptMode="alwaysScroll"/>
+
 </RelativeLayout>

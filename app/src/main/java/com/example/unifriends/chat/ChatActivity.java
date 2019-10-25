@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.unifriends.MainActivity;
 import com.example.unifriends.R;
@@ -35,6 +36,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private String roomId = "";
     private String roomName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,10 @@ public class ChatActivity extends AppCompatActivity {
             roomName = extras.getString("roomName");
         }
         sp = getSharedPreferences("login", MODE_PRIVATE);
+
+        Toolbar tb = findViewById(R.id.appbarlayout_tool_bar);
+        tb.setTitle("Chat Room: " + roomName);
+        //tb.setTitleTextColor(1);
         displayChatMessages();
     }
 
@@ -61,7 +67,7 @@ public class ChatActivity extends AppCompatActivity {
                 .getReference().child("messages").child(roomId)
                 .push()
                 .setValue(new ChatMessage(input.getText().toString(),
-                       sp.getString("name", ""))
+                        sp.getString("name", ""))
                 );
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
@@ -134,8 +140,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(ChatActivity.this, ChatRoomActivity.class));
     }

@@ -11,23 +11,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imgUser"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15sp"
-            android:fontFamily="sans-serif-light"
-            android:text="CHAT ROOMS"
-            android:textColor="@android:color/holo_green_light"
-            android:textSize="32sp"
-            android:layout_gravity="center_horizontal"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id = "@+id/appbarlayout_tool_bar"
+            android:background = "@color/colorPrimary"
+            android:layout_width = "match_parent"
+            android:layout_height = "?attr/actionBarSize"
+            app:layout_scrollFlags = "scroll|snap|enterAlways"
+            app:theme = "@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme = "@style/ThemeOverlay.AppCompat.Dark"
+            app:titleTextColor="@android:color/holo_green_dark"
+            app:title="CHAT ROOMS"
+            app:subtitle="List of available rooms for you"
+            app:subtitleTextColor="@android:color/holo_green_light"
+            />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="15dp"
             android:background="@color/grey" />
+
 
         <!--<TextView
             android:layout_width="match_parent"
