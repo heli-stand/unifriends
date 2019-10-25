@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallback {
@@ -32,8 +33,15 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
     LocationManager locationManager;
     LocationListener locationListener;
 
-    double[] selectedUserLocation;
+   double selectedUserLocationLat;
+   double selectedUserLocationLon;
     String selectedUserName;
+
+    Marker friendMarker;
+    Marker userMarker;
+
+
+
 
     //redirect to verification step
 
@@ -69,8 +77,11 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
         //get values passed down of selected user from results
 
         Intent intent = getIntent();
-        selectedUserLocation = intent.getDoubleArrayExtra("selectedUserLocation");
+        selectedUserLocationLat = Double.parseDouble(intent.getStringExtra("lat"));
+        selectedUserLocationLon = Double.parseDouble(intent.getStringExtra("lon"));
         selectedUserName = intent.getStringExtra("selectedUserName");
+
+
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -79,18 +90,23 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
 
 
+
+
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 // Add a marker for selected user and move the camera
-
                 Log.i("Location", location.toString());
                // Toast.makeText(FriendFinderMap.this, location.toString(), Toast.LENGTH_SHORT).show();
-                LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(current).title("You are here"));
+                LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+                LatLng selectedUser = new LatLng(selectedUserLocationLat, selectedUserLocationLon);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedUser,15));
+                mMap.addMarker(new MarkerOptions().position(selectedUser).title(selectedUserName+ " is here"));
+                userMarker = mMap.addMarker(new MarkerOptions().position(current).title("You are here"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+
 
             }
 
@@ -153,8 +169,9 @@ public class FriendFinderMap extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//                 LatLng selectedUser = new LatLng(selectedUserLocation[0], selectedUserLocation[2]);
-//                mMap.addMarker(new MarkerOptions().position(selectedUser).title(selectedUserName+ " is here"));
+        LatLng selectedUser = new LatLng(selectedUserLocationLat, selectedUserLocationLon);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedUser,15));
+        mMap.addMarker(new MarkerOptions().position(selectedUser).title(selectedUserName+ " is here"));
 
     }
 }
