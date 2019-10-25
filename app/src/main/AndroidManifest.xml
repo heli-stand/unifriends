@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SignupSubjects"></activity>
-        <activity android:name=".groups.createGroup" />
+        <activity
+            android:name=".groups.CreateGroup"
+            android:theme="@style/AppTheme.NoActionBar" />/>
         <activity
             android:name=".Signup4"
             android:theme="@style/AppTheme.NoActionBar" />

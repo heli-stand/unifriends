@@ -34,13 +34,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.example.unifriends.groups.User;
-import com.example.unifriends.groups.createGroup;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.unifriends.groups.CreateGroup;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,10 +43,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.unifriends.groups.createGroup.allUsers;
-import static com.example.unifriends.groups.createGroup.allUsersIdName;
-import static com.example.unifriends.groups.createGroup.allUsersSubjects;
-import static com.example.unifriends.groups.createGroup.usersSubjects;
+import static com.example.unifriends.groups.CreateGroup.allUsers;
+import static com.example.unifriends.groups.CreateGroup.allUsersIdName;
+import static com.example.unifriends.groups.CreateGroup.allUsersSubjects;
+import static com.example.unifriends.groups.CreateGroup.usersSubjects;
 
 
 public class FindFriends extends AppCompatActivity {
@@ -331,7 +326,7 @@ public class FindFriends extends AppCompatActivity {
     }
 
     public void goToCreateGroup(View view) {
-        Intent intent = new Intent(this, createGroup.class);
+        Intent intent = new Intent(this, CreateGroup.class);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }

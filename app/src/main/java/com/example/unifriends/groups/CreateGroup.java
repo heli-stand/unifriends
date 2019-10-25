@@ -12,14 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.unifriends.MainActivity;
 import com.example.unifriends.friendFinder.FindFriends;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,23 +24,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.example.unifriends.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class createGroup extends AppCompatActivity {
+public class CreateGroup extends AppCompatActivity {
     public String userID;
 
     public static ArrayList<String> usersSubjects = new ArrayList<>();
@@ -56,7 +48,6 @@ public class createGroup extends AppCompatActivity {
 
 
     public static ArrayList<String> test = new ArrayList<>();
-
 
 
     public static List<String> selectedUsers = new ArrayList<>();
@@ -289,7 +280,7 @@ public class createGroup extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Log.i("success", "DocumentSnapshot successfully updated!");
                         Toast.makeText(getApplicationContext(),"Group Successfully Created!",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(createGroup.this, FindFriends.class));
+                        startActivity(new Intent(CreateGroup.this, FindFriends.class));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
