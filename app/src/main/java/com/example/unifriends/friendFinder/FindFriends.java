@@ -37,6 +37,7 @@ import com.example.unifriends.groups.User;
 import com.example.unifriends.groups.CreateGroup;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +51,6 @@ public class FindFriends extends AppCompatActivity {
     String[] NAMES = {"Alexis Mitchell", "Bec Cartright", "Chloe Diamond", "Greg Johnson", "Mike Stewart", "Sam Smith", "Steve Hawkins"};
     int[] IMAGES = {R.drawable.alexis, R.drawable.bec, R.drawable.chloe, R.drawable.greg, R.drawable.mike, R.drawable.sam, R.drawable.steve};
     String[] LOCATIONS = {"-37.798332, 144.958660", "-37.797782, 144.959302","-37.798344, 144.961287", "-37.799477, 144.958903", "-37.799570, 144.961666", "-37.797946, 144.962282", "-37.797056, 144.963586" };
-    public static ArrayList<String> usersGroups = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -75,9 +75,10 @@ public class FindFriends extends AppCompatActivity {
 
         // tries to pull data from firebase
         final ArrayList<Friend> friends = new ArrayList<>();
+        final ArrayList<String> usersGroups = new ArrayList<>();
 
         final FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Log.d(TAG, "Setting CustomAdapter");
         final CustomAdapter customAdapter = new CustomAdapter(this, friends);
@@ -143,17 +144,47 @@ public class FindFriends extends AppCompatActivity {
             }
         });
 
-
-        for(String s: usersGroups) {
-            Log.i("hree are the groups in findfrines", s);
-        }
-
         RecyclerView recyclerView = findViewById(R.id.usersGroupsList);
-        MyAdapter myAdapter = new MyAdapter(this, usersGroups);
+        final MyAdapter myAdapter = new MyAdapter(this, usersGroups);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdapter);
 
+        db.collection("users").document(FirebaseAuth.getInstance().getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Log.d(TAG, "Listening for groups...");
+                DocumentSnapshot doc = task.getResult();
+                final ArrayList<String> groups = new ArrayList<>();
 
+                if (doc.exists() && doc.get("groups") != null) {
+                    List<String> temp = (List<String>) doc.get("groups");
+                    for (String t : temp) {
+                        groups.add(t);
+                    }
+                }
+
+                if (groups.size() != 0) {
+                    db.collection("group").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            Log.d(TAG, "Found Groups...");
+                            List<DocumentSnapshot> data = task.getResult().getDocuments();
+                            for (DocumentSnapshot d : data) {
+                                for (String s : groups) {
+                                    if (d.getId().equals(s)) {
+                                        usersGroups.add(d.get("name").toString());
+                                    }
+                                }
+                            }
+
+                            myAdapter.notifyDataSetChanged();
+                            Log.d(TAG, "notified myAdapter...");
+                        }
+                    });
+                }
+            }
+        });
 
     }
 
