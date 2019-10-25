@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -47,10 +48,6 @@ public class CreateGroup extends AppCompatActivity {
     public ArrayList<String> matches = new ArrayList<>();
     public static ArrayList<String> test = new ArrayList<>();
 
-
-    public static List<String> selectedUsers = new ArrayList<>();
-
-
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -75,6 +72,14 @@ public class CreateGroup extends AppCompatActivity {
         recyclerViewSubList.setAdapter(matchAdapter);
 
         getAllUsers(allUsers, myAdapter, matchAdapter, matchesUser);
+
+        Button createGroupButton = (Button) findViewById(R.id.createGroupButton);
+        createGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createGroup(allUsers, matchesUser);
+            }
+        });
     }
 
     public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.MyViewHolder> {
@@ -202,7 +207,7 @@ public class CreateGroup extends AppCompatActivity {
     */
 
 
-    public void createGroup(View view) {
+    public void createGroup(ArrayList<User> allUsers, ArrayList<User> matchUsers) {
         Log.i("click", "this has been clicked");
 
         EditText editGroupName = findViewById(R.id.groupNameEditText);
@@ -212,8 +217,23 @@ public class CreateGroup extends AppCompatActivity {
         Map<String, Object> data = new HashMap<>();
 
         //add current user to group
+        ArrayList<String> selectedUsers = new ArrayList<>();
 
+        for (User u : allUsers) {
+            if (u.isChecked()) {
+                if (!selectedUsers.contains(u.id)) {
+                    selectedUsers.add(u.id);
+                }
+            }
+        }
 
+        for (User u : matchUsers) {
+            if (u.isChecked()) {
+                if (!selectedUsers.contains(u.id)) {
+                    selectedUsers.add(u.id);
+                }
+            }
+        }
 
        if(selectedUsers.size() == 0 || groupName.equalsIgnoreCase("")) {
            Toast.makeText(getApplicationContext(),"Please enter a group name or select users to add to group",Toast.LENGTH_LONG).show();
