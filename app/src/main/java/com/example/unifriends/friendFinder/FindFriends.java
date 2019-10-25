@@ -108,7 +108,7 @@ public class FindFriends extends AppCompatActivity {
                         if (user.get("name") != null && user.get("location") != null && user.get("interests") != null) {
                             String id = user.getId();
                             String name = user.getString("name");
-                            GeoPoint location = (GeoPoint) user.get("location");
+                            GeoPoint location = user.getGeoPoint("location");
                             // TODO: Get appropriate image from firebase and download it here so it can be displayed
                             int[] interests = Ints.toArray((List<Integer>) user.get("interests"));
                             Friend f = new Friend(id, name, location, R.drawable.alexis, interests);
