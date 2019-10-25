@@ -1,7 +1,9 @@
 package com.example.unifriends.friendFinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.common.primitives.Ints;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import org.w3c.dom.Text;
 
@@ -26,6 +29,9 @@ public class FriendProfile extends AppCompatActivity {
     private String[] intsStrings = {"Music", "Traveling", "Dancing"," Movies"," Reading"," Writing",
             " Going out"," Sports"," Gaming"," Blogging"," Foodie"," History"," Outdoors",
             " Technology"," Cooking"," Programming"," Pets"," Cars"," Gym"," Gardening"};
+
+    public GeoPoint location;
+    public String userName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class FriendProfile extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot user = task.getResult();
                 nametext.setText(user.getString("name"));
+                userName = user.getString("name");
                 image.setImageResource(R.drawable.alexis);
                 int[] intsArray = Ints.toArray((List<Integer>) user.get("interests"));
                 ArrayList<String> ints = new ArrayList<>();
@@ -55,9 +62,22 @@ public class FriendProfile extends AppCompatActivity {
                     }
                 }
                 interests.setText(TextUtils.join(", ", ints));
+                location = user.getGeoPoint("location");
             }
         });
 
+
+
+    }
+
+    public void goToMap(View view) {
+
+
+        Intent intent = new Intent(this, FriendFinderMap.class);
+        intent.putExtra("lat", Double.toString(location.getLatitude()));
+        intent.putExtra("lon", Double.toString(location.getLongitude()));
+        intent.putExtra("selectedUserName", userName);
+        startActivity(intent);
     }
 
 
