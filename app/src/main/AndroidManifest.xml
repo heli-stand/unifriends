@@ -39,8 +39,8 @@
         <activity
             android:name=".Verification"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".friendFinder.FindFriends" />
-        <activity android:name=".friendFinder.FriendProfile" />
+        <activity android:name=".friendFinder.FindFriends" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".friendFinder.FriendProfile" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FacialSearch"
             android:theme="@style/AppTheme.NoActionBar" />

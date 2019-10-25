@@ -52,7 +52,6 @@ public class ChatActivity extends AppCompatActivity {
 
         Toolbar tb = findViewById(R.id.appbarlayout_tool_bar);
         tb.setTitle("Chat Room: " + roomName);
-        //tb.setTitleTextColor(1);
         displayChatMessages();
     }
 
@@ -69,11 +68,12 @@ public class ChatActivity extends AppCompatActivity {
                 .setValue(new ChatMessage(input.getText().toString(),
                         sp.getString("name", ""))
                 );
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
         // Clear the input
         input.setText("");
         displayChatMessages();
+        //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
     }
 
     private void displayChatMessages() {
