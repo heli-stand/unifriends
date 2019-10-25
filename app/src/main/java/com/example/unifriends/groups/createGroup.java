@@ -73,10 +73,6 @@ public class createGroup extends AppCompatActivity {
         userID = getIntent().getStringExtra("userID");
 
 
-
-
-
-
         //get all users
 
         for (String s: test) {

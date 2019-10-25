@@ -2,6 +2,8 @@ package com.example.unifriends.friendFinder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.unifriends.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.primitives.Ints;
 import com.google.firebase.auth.FirebaseAuth;
@@ -109,9 +113,9 @@ public class FindFriends extends AppCompatActivity {
                             String id = user.getId();
                             String name = user.getString("name");
                             GeoPoint location = user.getGeoPoint("location");
-                            // TODO: Get appropriate image from firebase and download it here so it can be displayed
+                            String photo = user.get("photo").toString();
                             int[] interests = Ints.toArray((List<Integer>) user.get("interests"));
-                            Friend f = new Friend(id, name, location, R.drawable.alexis, interests);
+                            Friend f = new Friend(id, name, location, photo, interests);
                             if (f.getId().equals(auth.getCurrentUser().getUid())) {
                                 currentUser = f;
                             } else {
@@ -260,6 +264,29 @@ public class FindFriends extends AppCompatActivity {
         });
     }
 
+    private void setPhoto(String source, final ImageView imageView){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference pathReference = storageRef.child(source);
+
+        final long ONE_MEGABYTE = 1024 * 1024 * 5;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.d(TAG, exception.toString());
+            }
+        });
+    }
+
     public void getAllUsers() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -346,10 +373,10 @@ public class FindFriends extends AppCompatActivity {
 
             convertView = getLayoutInflater().inflate(R.layout.customlayout,null);
 
-            ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
+            final ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
             TextView textView_name = (TextView)convertView.findViewById(R.id.textView_name);
 
-            imageView.setImageResource(current.getImg());
+            setPhoto(current.getImg(), imageView);
             textView_name.setText(current.getName());
 
             return convertView;
@@ -372,12 +399,12 @@ public class FindFriends extends AppCompatActivity {
         private String name;
         private GeoPoint location;
         // TODO: Implement uploading and storing of images on Firebase first for something more sensible
-        private int img;
+        private String img;
         private Integer overlap;
 
         private int[] interests;
 
-        public Friend(String id, String name, GeoPoint loc, int img, int[] interests) {
+        public Friend(String id, String name, GeoPoint loc, String img, int[] interests) {
             this.id = id;
             this.name = name;
             this.location = loc;
@@ -405,7 +432,7 @@ public class FindFriends extends AppCompatActivity {
             return location;
         }
 
-        public int getImg() {
+        public String getImg() {
             return img;
         }
 

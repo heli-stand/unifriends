@@ -13,21 +13,44 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="12dp"
         android:text="Friends"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView8"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="82dp"
+        android:text="Groups" />
+
+    <Button
+        android:id="@+id/createGroupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="72dp"
+        android:layout_marginRight="23dp"
+        android:onClick="goToCreateGroup"
+        android:text="Create" />
+
     <ListView
         android:id="@+id/allUsers"
         android:layout_width="396dp"
         android:layout_height="358dp"
-
-        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="350dp"
-        android:layout_marginBottom="23dp"></ListView>
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp"
+        ></ListView>
 
     <TextView
         android:id="@+id/textView7"
@@ -39,34 +62,15 @@
         android:layout_marginBottom="396dp"
         android:text="Results" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="354dp"
-        android:layout_marginBottom="629dp"
-        android:text="Groups" />
-
-    <Button
-        android:id="@+id/createGroupButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="616dp"
-        android:onClick="goToCreateGroup"
-        android:text="Create" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/usersGroupsList"
-        android:layout_width="335dp"
+        android:layout_width="396dp"
         android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="445dp" />
+        android:layout_marginTop="140dp"/>
 
 </RelativeLayout>
