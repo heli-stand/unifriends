@@ -87,9 +87,8 @@ public class Calendar extends AppCompatActivity {
         editTime.addTextChangedListener(loginTextWatcher);
 
         com.example.unifriends.events.HomeCollection.date_collection_arr=new ArrayList<com.example.unifriends.events.HomeCollection>();
-//        HomeCollection.date_collection_arr.add( new HomeCollection("2019-10-10" ,"Study session","Study_session","this is a study sesh","11:00am"));
-//        HomeCollection.date_collection_arr.add( new HomeCollection("2019-10-10" ,"Team meeting","Team meeting","this is team meeting","12:00pm"));
-        com.example.unifriends.events.HomeCollection.date_collection_arr.add( new com.example.unifriends.events.HomeCollection("2019-10-15" ,"Event 1","comp90018","ERC","2:00pm"));
+
+//        com.example.unifriends.events.HomeCollection.date_collection_arr.add( new com.example.unifriends.events.HomeCollection("2019-10-15" ,"Event 1","comp90018","ERC","2:00pm"));
 
         cal_month = (GregorianCalendar) GregorianCalendar.getInstance();
         cal_month_copy = (GregorianCalendar) cal_month.clone();
